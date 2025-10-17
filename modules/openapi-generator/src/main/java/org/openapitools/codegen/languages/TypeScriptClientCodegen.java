@@ -122,8 +122,6 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
 
         // NOTE: TypeScript uses camel cased reserved words, while models are title cased. We don't want lowercase comparisons.
         reservedWords.addAll(Arrays.asList(
-                // local variable names used in API methods (endpoints)
-                "from",
                 // Typescript reserved words
                 "constructor"));
 
