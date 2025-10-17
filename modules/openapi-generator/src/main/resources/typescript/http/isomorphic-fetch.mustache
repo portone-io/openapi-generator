@@ -5,7 +5,7 @@ import { from, Observable } from {{#useRxJS}}'rxjs'{{/useRxJS}}{{^useRxJS}}'../r
 import fetch from "node-fetch";
 {{/node}}
 {{#browser}}
-import "whatwg-fetch";
+//import "whatwg-fetch"; 추가 의존성을 재거하는 방향으로 수정
 {{/browser}}
 {{/platforms}}
 
