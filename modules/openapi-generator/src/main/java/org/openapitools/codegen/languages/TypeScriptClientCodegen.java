@@ -26,6 +26,7 @@ import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -409,6 +410,14 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
             mo.put("tsImports", toTsImports(cm, cm.imports));
         }
         return objs;
+    }
+
+    @Override
+    public List<CodegenSecurity> fromSecurity(Map<String, SecurityScheme> schemes) {
+        List<CodegenSecurity> securities = super.fromSecurity(schemes);
+
+        securities.removeIf(security ->!security.isApiKey && !security.isBasicBasic && !security.isBasicBearer && !security.isOAuth && !security.isHttpSignature);
+        return securities;
     }
 
     @Override
