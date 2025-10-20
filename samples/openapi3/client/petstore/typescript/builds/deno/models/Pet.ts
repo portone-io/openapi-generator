@@ -79,5 +79,10 @@ export class Pet {
     }
 }
 
-    export type PetStatusEnum = "available" | "pending" | "sold" ;
+    export type PetStatusEnum =  "available" | "pending" | "sold" ;
+    export const PetStatusEnum = {
+        Available: 'available',
+        Pending: 'pending',
+        Sold: 'sold'
+    };
 

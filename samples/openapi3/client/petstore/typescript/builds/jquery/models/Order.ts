@@ -76,5 +76,10 @@ export class Order {
     }
 }
 
-    export type OrderStatusEnum = "placed" | "approved" | "delivered" ;
+    export type OrderStatusEnum =  "placed" | "approved" | "delivered" ;
+    export const OrderStatusEnum = {
+        Placed: 'placed',
+        Approved: 'approved',
+        Delivered: 'delivered'
+    };
 
