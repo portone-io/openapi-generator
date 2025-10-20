@@ -84,5 +84,5 @@ export class Pet {
         Available: 'available',
         Pending: 'pending',
         Sold: 'sold'
-    };
+    } as const;
 

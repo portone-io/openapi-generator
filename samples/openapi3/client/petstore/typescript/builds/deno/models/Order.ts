@@ -81,5 +81,5 @@ export class Order {
         Placed: 'placed',
         Approved: 'approved',
         Delivered: 'delivered'
-    };
+    } as const;
 

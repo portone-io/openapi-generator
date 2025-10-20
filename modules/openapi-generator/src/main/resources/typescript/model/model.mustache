@@ -107,7 +107,7 @@ export enum {{classname}}{{enumName}} {
         {{name}}: {{{value}}}{{^-last}},{{/-last}}
         {{/enumVars}}
         {{/allowableValues}}
-    };
+    } as const;
 {{/stringUnion}}
 {{/enumTypes}}
 {{/isEnum}}
@@ -135,7 +135,7 @@ export enum {{classname}} {
         {{name}}: {{{value}}}{{^-last}},{{/-last}}
         {{/enumVars}}
         {{/allowableValues}}
-    };
+    } as const;
 {{/stringUnion}}
 {{/enumTypes}}
 {{/isEnum}}
