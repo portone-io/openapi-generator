@@ -24,6 +24,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.parser.util.SchemaTypeUtil;
 import lombok.Getter;
@@ -408,6 +409,14 @@ public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodege
         }
     }
 
+    @Override
+    public List<CodegenSecurity> fromSecurity(Map<String, SecurityScheme> schemes) {
+        List<CodegenSecurity> securities = super.fromSecurity(schemes);
+
+        securities.removeIf(security ->!security.isApiKey && !security.isBasicBasic && !security.isBasicBearer && !security.isOAuth && !security.isHttpSignature);
+        return securities;
+    }
+    
     @Override
     public Map<String, ModelsMap> postProcessAllModels(Map<String, ModelsMap> objs) {
         List<ExtendedCodegenModel> allModels = new ArrayList<>();

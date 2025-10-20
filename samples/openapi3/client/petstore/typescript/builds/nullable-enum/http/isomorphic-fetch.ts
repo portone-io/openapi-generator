@@ -1,6 +1,6 @@
 import {HttpLibrary, RequestContext, ResponseContext} from './http';
 import { from, Observable } from '../rxjsStub';
-import "whatwg-fetch";
+//import "whatwg-fetch"; 추가 의존성을 재거하는 방향으로 수정
 
 export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 

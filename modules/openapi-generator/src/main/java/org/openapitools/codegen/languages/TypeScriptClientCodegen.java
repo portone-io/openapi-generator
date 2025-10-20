@@ -26,6 +26,7 @@ import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -81,6 +82,10 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
     public static final String USE_ERASABLE_SYNTAX = "useErasableSyntax";
     public static final String USE_ERASABLE_SYNTAX_DESC = "Use erasable syntax for the generated code. This is a temporary feature and will be removed in the future.";
 
+    private static final String ENUM_TYPE_SWITCH = "enumType";
+    private static final String ENUM_TYPE_SWITCH_DESC = "Specify the enum type which should be used in the client code.";
+    private static final String[][] ENUM_TYPES = {{"stringUnion", "Union of literal string types"}, {"enum", "Typescript's [string enums](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums)"}};
+    
     private final Map<String, String> frameworkToHttpLibMap;
 
     @Setter
@@ -118,8 +123,6 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
 
         // NOTE: TypeScript uses camel cased reserved words, while models are title cased. We don't want lowercase comparisons.
         reservedWords.addAll(Arrays.asList(
-                // local variable names used in API methods (endpoints)
-                "from",
                 // Typescript reserved words
                 "constructor"));
 
@@ -148,6 +151,13 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
         platformOption.defaultValue(PLATFORMS[0]);
 
         cliOptions.add(platformOption);
+
+        CliOption enumTypeOption = new CliOption(TypeScriptClientCodegen.ENUM_TYPE_SWITCH, TypeScriptClientCodegen.ENUM_TYPE_SWITCH_DESC);
+        for (String[] option : TypeScriptClientCodegen.ENUM_TYPES) {
+            enumTypeOption.addEnum(option[0], option[1]);
+        }
+        enumTypeOption.defaultValue(ENUM_TYPES[1][0]);
+        cliOptions.add(enumTypeOption);
 
         // Set property naming to camelCase
         supportModelPropertyNaming(CodegenConstants.MODEL_PROPERTY_NAMING_TYPE.camelCase);
@@ -403,6 +413,14 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
     }
 
     @Override
+    public List<CodegenSecurity> fromSecurity(Map<String, SecurityScheme> schemes) {
+        List<CodegenSecurity> securities = super.fromSecurity(schemes);
+
+        securities.removeIf(security ->!security.isApiKey && !security.isBasicBasic && !security.isBasicBearer && !security.isOAuth && !security.isHttpSignature);
+        return securities;
+    }
+
+    @Override
     public String apiDocFileFolder() {
         return (outputFolder + "/" + apiDocPath).replace('/', File.separatorChar);
     }
@@ -449,6 +467,15 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
                 "http" + File.separator + httpLibName + ".mustache",
                 "http", httpLibName + ".ts"
         ));
+
+        additionalProperties.putIfAbsent(ENUM_TYPE_SWITCH, ENUM_TYPES[1][0]);
+        Object propEnumType = additionalProperties.get(ENUM_TYPE_SWITCH);
+
+        Map<String, Boolean> enumTypes = new HashMap<>();
+        for (String[] option : ENUM_TYPES) {
+            enumTypes.put(option[0], option[0].equals(propEnumType));
+        }
+        additionalProperties.put("enumTypes", enumTypes);
 
         Object propPlatform = additionalProperties.get(PLATFORM_SWITCH);
         if (propPlatform == null) {
