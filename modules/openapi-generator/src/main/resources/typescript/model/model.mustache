@@ -100,7 +100,14 @@ export enum {{classname}}{{enumName}} {
 }
 {{/enum}}
 {{#stringUnion}}
-    export type {{classname}}{{enumName}} ={{#allowableValues}}{{#values}} "{{.}}" {{^-last}}|{{/-last}}{{/values}}{{/allowableValues}};
+    export type {{classname}}{{enumName}} = {{#allowableValues}}{{#values}} "{{.}}" {{^-last}}|{{/-last}}{{/values}}{{/allowableValues}};
+    export const {{classname}}{{enumName}} = {
+        {{#allowableValues}}
+        {{#enumVars}}
+        {{name}}: {{{value}}}{{^-last}},{{/-last}}
+        {{/enumVars}}
+        {{/allowableValues}}
+    } as const;
 {{/stringUnion}}
 {{/enumTypes}}
 {{/isEnum}}
@@ -122,6 +129,13 @@ export enum {{classname}} {
 {{/enum}}
 {{#stringUnion}}
     export type {{classname}} ={{#allowableValues}}{{#values}} "{{.}}" {{^-last}}|{{/-last}}{{/values}}{{/allowableValues}};
+    export const {{classname}}{{enumName}} = {
+        {{#allowableValues}}
+        {{#enumVars}}
+        {{name}}: {{{value}}}{{^-last}},{{/-last}}
+        {{/enumVars}}
+        {{/allowableValues}}
+    } as const;
 {{/stringUnion}}
 {{/enumTypes}}
 {{/isEnum}}
