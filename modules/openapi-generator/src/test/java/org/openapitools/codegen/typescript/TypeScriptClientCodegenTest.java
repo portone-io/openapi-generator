@@ -238,7 +238,7 @@ public class TypeScriptClientCodegenTest {
         );
 
         String content = Files.readString(file);
-        assertEquals(1, TestUtils.countOccurrences(content, "@deprecated"));
+        assertEquals(3, TestUtils.countOccurrences(content, "@deprecated"));
     }
 
     @Test
@@ -264,7 +264,7 @@ public class TypeScriptClientCodegenTest {
         );
 
         String content = Files.readString(file);
-        assertEquals(1, TestUtils.countOccurrences(content, "@deprecated"));
+        assertEquals(3, TestUtils.countOccurrences(content, "@deprecated"));
     }
 
     @Test

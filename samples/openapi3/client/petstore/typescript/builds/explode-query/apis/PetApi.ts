@@ -787,3 +787,333 @@ export class PetApiResponseProcessor {
     }
 
 }
+
+/**
+ * 
+ * Add a new pet to the store
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function addPetWithHttpInfo(
+    configuration: Configuration,
+    pet: Pet
+): Promise<HttpInfo<void>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.addPet(pet);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.addPetWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Add a new pet to the store
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function addPet(
+    configuration: Configuration,
+    pet: Pet
+): Promise<void> {
+    const httpInfo = await addPetWithHttpInfo(configuration, pet);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Deletes a pet
+ * @param configuration The configuration object
+ * @param petId Pet id to delete
+ * @param apiKey 
+ */
+export async function deletePetWithHttpInfo(
+    configuration: Configuration,
+    petId: number,
+    apiKey?: string
+): Promise<HttpInfo<void>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.deletePet(petId, apiKey);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.deletePetWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Deletes a pet
+ * @param configuration The configuration object
+ * @param petId Pet id to delete
+ * @param apiKey 
+ */
+export async function deletePet(
+    configuration: Configuration,
+    petId: number,
+    apiKey?: string
+): Promise<void> {
+    const httpInfo = await deletePetWithHttpInfo(configuration, petId, apiKey);
+    return httpInfo.data;
+}
+
+/**
+ * Multiple status values can be provided with comma separated strings
+ * Finds Pets by status
+ * @param configuration The configuration object
+ * @param status Status values that need to be considered for filter (@deprecated)
+ */
+export async function findPetsByStatusWithHttpInfo(
+    configuration: Configuration,
+    status: Array<'available' | 'pending' | 'sold'>
+): Promise<HttpInfo<Array<Pet>>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.findPetsByStatus(status);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.findPetsByStatusWithHttpInfo(response);
+}
+
+/**
+ * Multiple status values can be provided with comma separated strings
+ * Finds Pets by status
+ * @param configuration The configuration object
+ * @param status Status values that need to be considered for filter (@deprecated)
+ */
+export async function findPetsByStatus(
+    configuration: Configuration,
+    status: Array<'available' | 'pending' | 'sold'>
+): Promise<Array<Pet>> {
+    const httpInfo = await findPetsByStatusWithHttpInfo(configuration, status);
+    return httpInfo.data;
+}
+
+/**
+ * @deprecated
+ *
+ * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+ * Finds Pets by tags
+ * @param configuration The configuration object
+ * @param tags Tags to filter by
+ */
+export async function findPetsByTagsWithHttpInfo(
+    configuration: Configuration,
+    tags: Set<string>
+): Promise<HttpInfo<Set<Pet>>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.findPetsByTags(tags);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.findPetsByTagsWithHttpInfo(response);
+}
+
+/**
+ * @deprecated
+ *
+ * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+ * Finds Pets by tags
+ * @param configuration The configuration object
+ * @param tags Tags to filter by
+ */
+export async function findPetsByTags(
+    configuration: Configuration,
+    tags: Set<string>
+): Promise<Set<Pet>> {
+    const httpInfo = await findPetsByTagsWithHttpInfo(configuration, tags);
+    return httpInfo.data;
+}
+
+/**
+ * Returns a single pet
+ * Find pet by ID
+ * @param configuration The configuration object
+ * @param petId ID of pet to return
+ */
+export async function getPetByIdWithHttpInfo(
+    configuration: Configuration,
+    petId: number
+): Promise<HttpInfo<Pet>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.getPetById(petId);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.getPetByIdWithHttpInfo(response);
+}
+
+/**
+ * Returns a single pet
+ * Find pet by ID
+ * @param configuration The configuration object
+ * @param petId ID of pet to return
+ */
+export async function getPetById(
+    configuration: Configuration,
+    petId: number
+): Promise<Pet> {
+    const httpInfo = await getPetByIdWithHttpInfo(configuration, petId);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Update an existing pet
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function updatePetWithHttpInfo(
+    configuration: Configuration,
+    pet: Pet
+): Promise<HttpInfo<void>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.updatePet(pet);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.updatePetWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Update an existing pet
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function updatePet(
+    configuration: Configuration,
+    pet: Pet
+): Promise<void> {
+    const httpInfo = await updatePetWithHttpInfo(configuration, pet);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Updates a pet in the store with form data
+ * @param configuration The configuration object
+ * @param petId ID of pet that needs to be updated
+ * @param name Updated name of the pet
+ * @param status Updated status of the pet
+ */
+export async function updatePetWithFormWithHttpInfo(
+    configuration: Configuration,
+    petId: number,
+    name?: string,
+    status?: string
+): Promise<HttpInfo<void>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.updatePetWithForm(petId, name, status);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.updatePetWithFormWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Updates a pet in the store with form data
+ * @param configuration The configuration object
+ * @param petId ID of pet that needs to be updated
+ * @param name Updated name of the pet
+ * @param status Updated status of the pet
+ */
+export async function updatePetWithForm(
+    configuration: Configuration,
+    petId: number,
+    name?: string,
+    status?: string
+): Promise<void> {
+    const httpInfo = await updatePetWithFormWithHttpInfo(configuration, petId, name, status);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * uploads an image
+ * @param configuration The configuration object
+ * @param petId ID of pet to update
+ * @param additionalMetadata Additional data to pass to server
+ * @param file file to upload
+ */
+export async function uploadFileWithHttpInfo(
+    configuration: Configuration,
+    petId: number,
+    additionalMetadata?: string,
+    file?: HttpFile
+): Promise<HttpInfo<ApiResponse>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.uploadFile(petId, additionalMetadata, file);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.uploadFileWithHttpInfo(response);
+}
+
+/**
+ * 
+ * uploads an image
+ * @param configuration The configuration object
+ * @param petId ID of pet to update
+ * @param additionalMetadata Additional data to pass to server
+ * @param file file to upload
+ */
+export async function uploadFile(
+    configuration: Configuration,
+    petId: number,
+    additionalMetadata?: string,
+    file?: HttpFile
+): Promise<ApiResponse> {
+    const httpInfo = await uploadFileWithHttpInfo(configuration, petId, additionalMetadata, file);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * uploads an image (required)
+ * @param configuration The configuration object
+ * @param petId ID of pet to update
+ * @param requiredFile file to upload
+ * @param additionalMetadata Additional data to pass to server
+ */
+export async function uploadFileWithRequiredFileWithHttpInfo(
+    configuration: Configuration,
+    petId: number,
+    requiredFile: HttpFile,
+    additionalMetadata?: string
+): Promise<HttpInfo<ApiResponse>> {
+    const requestFactory = new PetApiRequestFactory(configuration);
+    const responseProcessor = new PetApiResponseProcessor();
+
+    const requestContext = await requestFactory.uploadFileWithRequiredFile(petId, requiredFile, additionalMetadata);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.uploadFileWithRequiredFileWithHttpInfo(response);
+}
+
+/**
+ * 
+ * uploads an image (required)
+ * @param configuration The configuration object
+ * @param petId ID of pet to update
+ * @param requiredFile file to upload
+ * @param additionalMetadata Additional data to pass to server
+ */
+export async function uploadFileWithRequiredFile(
+    configuration: Configuration,
+    petId: number,
+    requiredFile: HttpFile,
+    additionalMetadata?: string
+): Promise<ApiResponse> {
+    const httpInfo = await uploadFileWithRequiredFileWithHttpInfo(configuration, petId, requiredFile, additionalMetadata);
+    return httpInfo.data;
+}
+

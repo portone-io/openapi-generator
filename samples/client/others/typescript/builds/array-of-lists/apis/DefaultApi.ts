@@ -71,3 +71,29 @@ export class DefaultApiResponseProcessor {
     }
 
 }
+
+/**
+ * @param configuration The configuration object
+ */
+export async function listWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<ListPaged>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.list();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.listWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function list(
+    configuration: Configuration
+): Promise<ListPaged> {
+    const httpInfo = await listWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+

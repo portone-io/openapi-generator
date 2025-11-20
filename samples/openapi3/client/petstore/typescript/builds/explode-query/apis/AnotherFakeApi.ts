@@ -93,3 +93,37 @@ export class AnotherFakeApiResponseProcessor {
     }
 
 }
+
+/**
+ * To test special tags and operation ID starting with number
+ * To test special tags
+ * @param configuration The configuration object
+ * @param client client model
+ */
+export async function _123testSpecialTagsWithHttpInfo(
+    configuration: Configuration,
+    client: Client
+): Promise<HttpInfo<Client>> {
+    const requestFactory = new AnotherFakeApiRequestFactory(configuration);
+    const responseProcessor = new AnotherFakeApiResponseProcessor();
+
+    const requestContext = await requestFactory._123testSpecialTags(client);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor._123testSpecialTagsWithHttpInfo(response);
+}
+
+/**
+ * To test special tags and operation ID starting with number
+ * To test special tags
+ * @param configuration The configuration object
+ * @param client client model
+ */
+export async function _123testSpecialTags(
+    configuration: Configuration,
+    client: Client
+): Promise<Client> {
+    const httpInfo = await _123testSpecialTagsWithHttpInfo(configuration, client);
+    return httpInfo.data;
+}
+
