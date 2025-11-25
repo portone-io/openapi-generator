@@ -124,6 +124,9 @@ public class OpenAPINormalizer {
     // the allOf contains a new schema containing the properties in the top level
     final String REFACTOR_ALLOF_WITH_PROPERTIES_ONLY = "REFACTOR_ALLOF_WITH_PROPERTIES_ONLY";
 
+    // when set to true, remove the "properties" of a schema with type other than "object"
+    final String REMOVE_PROPERTIES_FROM_TYPE_OTHER_THAN_OBJECT = "REMOVE_PROPERTIES_FROM_TYPE_OTHER_THAN_OBJECT";
+
     // when set to true, normalize OpenAPI 3.1 spec to make it work with the generator
     final String NORMALIZE_31SPEC = "NORMALIZE_31SPEC";
 
@@ -206,11 +209,13 @@ public class OpenAPINormalizer {
         ruleNames.add(SET_CONTAINER_TO_NULLABLE);
         ruleNames.add(SET_PRIMITIVE_TYPES_TO_NULLABLE);
         ruleNames.add(SIMPLIFY_ONEOF_ANYOF_ENUM);
+        ruleNames.add(REMOVE_PROPERTIES_FROM_TYPE_OTHER_THAN_OBJECT);
 
         // rules that are default to true
         rules.put(SIMPLIFY_ONEOF_ANYOF, true);
         rules.put(SIMPLIFY_BOOLEAN_ENUM, true);
         rules.put(SIMPLIFY_ONEOF_ANYOF_ENUM, true);
+        rules.put(REFACTOR_ALLOF_WITH_PROPERTIES_ONLY, true);
 
         processRules(inputRules);
 
@@ -691,6 +696,11 @@ public class OpenAPINormalizer {
      * @return Schema
      */
     public Schema normalizeSchema(Schema schema, Set<Schema> visitedSchemas) {
+        // normalize reference schema
+        if (StringUtils.isNotEmpty(schema.get$ref())) {
+            normalizeReferenceSchema(schema);
+        }
+
         if (skipNormalization(schema, visitedSchemas)) {
             return schema;
         }
@@ -700,6 +710,8 @@ public class OpenAPINormalizer {
         }
 
         markSchemaAsVisited(schema, visitedSchemas);
+
+        processNormalizeOtherThanObjectWithProperties(schema);
 
         if (ModelUtils.isArraySchema(schema)) { // array
             Schema result = normalizeArraySchema(schema);
@@ -756,6 +768,30 @@ public class OpenAPINormalizer {
         return schema;
     }
 
+    /**
+     * Normalize reference schema with allOf to support sibling properties
+     *
+     * @param schema         Schema
+     */
+    protected void normalizeReferenceSchema(Schema schema) {
+        if (schema.getTitle() != null || schema.getDescription() != null
+                || schema.getNullable() != null || schema.getDefault() != null || schema.getDeprecated() != null
+                || schema.getMaximum() != null || schema.getMinimum() != null
+                || schema.getExclusiveMaximum() != null || schema.getExclusiveMinimum() != null
+                || schema.getMaxItems() != null || schema.getMinItems() != null
+                || schema.getMaxProperties() != null || schema.getMinProperties() != null
+                || schema.getMaxLength() != null || schema.getMinLength() != null
+                || schema.getWriteOnly() != null || schema.getReadOnly() != null
+                || schema.getExample() != null || (schema.getExamples() != null && !schema.getExamples().isEmpty())
+                || schema.getMultipleOf() != null || schema.getPattern() != null
+                || (schema.getExtensions() != null && !schema.getExtensions().isEmpty())
+        ) {
+            // create allOf with a $ref schema
+            schema.addAllOfItem(new Schema<>().$ref(schema.get$ref()));
+            // clear $ref in original schema
+            schema.set$ref(null);
+        }
+    }
 
     /**
      * Check if normalization is needed.
@@ -1960,6 +1996,23 @@ public class OpenAPINormalizer {
         private boolean hasMethod(String method) {
             return methodFilters.contains(method);
         }
+    }
 
+    /**
+     * When set to true, remove "properties" attribute on schema other than "object"
+     * since it should be ignored and may result in odd generated code
+     *
+     * @param schema         Schema
+     * @return Schema
+     */
+    protected void processNormalizeOtherThanObjectWithProperties(Schema schema) {
+        if (getRule(REMOVE_PROPERTIES_FROM_TYPE_OTHER_THAN_OBJECT)) {
+            // Check object models / any type models / composed models for properties,
+            // if the schema has a type defined that is not "object" it should not define
+            // any properties
+            if (schema.getType() != null && !"object".equals(schema.getType())) {
+                schema.setProperties(null);
+            }
+        }
     }
 }

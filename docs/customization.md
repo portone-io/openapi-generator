@@ -538,6 +538,7 @@ OpenAPI Normalizer transforms the input OpenAPI doc/spec (which may not perfectl
 
 - SIMPLIFY_ONEOF_ANYOF 
 - SIMPLIFY_BOOLEAN_ENUM
+- REFACTOR_ALLOF_WITH_PROPERTIES_ONLY
 
 (One can use `DISABLE_ALL=true` to disable all the rules)
 
@@ -641,6 +642,13 @@ java -jar modules/openapi-generator-cli/target/openapi-generator-cli.jar generat
 Example:
 ```
 java -jar modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -g java -i modules/openapi-generator/src/test/resources/3_0/required-properties.yaml -o /tmp/java-okhttp/ --openapi-normalizer NORMALIZER_CLASS=org.openapitools.codegen.OpenAPINormalizerTest$RemoveRequiredNormalizer
+```
+
+- `REMOVE_PROPERTIES_FROM_TYPE_OTHER_THAN_OBJECT`: When set to true, remove the "properties" of a schema with type other than "object".
+
+Example:
+```
+java -jar modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -g java -i modules/openapi-generator/src/test/resources/3_0/required-properties.yaml -o /tmp/java-okhttp/ --openapi-normalizer REMOVE_PROPERTIES_FROM_TYPE_OTHER_THAN_OBJECT=true
 ```
 
 - `FILTER`
