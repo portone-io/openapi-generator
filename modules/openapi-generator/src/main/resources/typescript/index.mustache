@@ -27,6 +27,13 @@ export { {{#apiInfo}}{{#apis}}{{#operations}}Observable{{classname}} as {{classn
 export { {{#apiInfo}}{{#apis}}{{#operations}}Promise{{classname}} as {{classname}}{{^-last}}, {{/-last}} {{/operations}}{{/apis}}{{/apiInfo}}} from './types/PromiseAPI{{importFileExtension}}';
 {{/useRxJS}}
 {{/useObjectParameters}}
+{{#apiInfo}}
+{{#apis}}
+{{#operations}}
+export * from './apis/{{classname}}{{importFileExtension}}';
+{{/operations}}
+{{/apis}}
+{{/apiInfo}}
 
 {{#useInversify}}
 export * from "./services/index{{importFileExtension}}";

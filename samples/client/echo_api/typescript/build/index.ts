@@ -10,4 +10,10 @@ export { RequiredError } from "./apis/baseapi";
 export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddleware } from './middleware';
 export { Observable } from './rxjsStub';
 export { PromiseAuthApi as AuthApi,  PromiseBodyApi as BodyApi,  PromiseFormApi as FormApi,  PromiseHeaderApi as HeaderApi,  PromisePathApi as PathApi,  PromiseQueryApi as QueryApi } from './types/PromiseAPI';
+export * from './apis/AuthApi';
+export * from './apis/BodyApi';
+export * from './apis/FormApi';
+export * from './apis/HeaderApi';
+export * from './apis/PathApi';
+export * from './apis/QueryApi';
 

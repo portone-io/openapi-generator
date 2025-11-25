@@ -703,3 +703,330 @@ export class BodyApiResponseProcessor {
     }
 
 }
+
+/**
+ * Test binary (gif) response body
+ * Test binary (gif) response body
+ * @param configuration The configuration object
+ */
+export async function testBinaryGifWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<HttpFile>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testBinaryGif();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testBinaryGifWithHttpInfo(response);
+}
+
+/**
+ * Test binary (gif) response body
+ * Test binary (gif) response body
+ * @param configuration The configuration object
+ */
+export async function testBinaryGif(
+    configuration: Configuration
+): Promise<HttpFile> {
+    const httpInfo = await testBinaryGifWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * Test body parameter(s)
+ * Test body parameter(s)
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testBodyApplicationOctetstreamBinaryWithHttpInfo(
+    configuration: Configuration,
+    body?: HttpFile
+): Promise<HttpInfo<string>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testBodyApplicationOctetstreamBinary(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testBodyApplicationOctetstreamBinaryWithHttpInfo(response);
+}
+
+/**
+ * Test body parameter(s)
+ * Test body parameter(s)
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testBodyApplicationOctetstreamBinary(
+    configuration: Configuration,
+    body?: HttpFile
+): Promise<string> {
+    const httpInfo = await testBodyApplicationOctetstreamBinaryWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * Test array of binary in multipart mime
+ * Test array of binary in multipart mime
+ * @param configuration The configuration object
+ * @param files 
+ */
+export async function testBodyMultipartFormdataArrayOfBinaryWithHttpInfo(
+    configuration: Configuration,
+    files: Array<HttpFile>
+): Promise<HttpInfo<string>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testBodyMultipartFormdataArrayOfBinary(files);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testBodyMultipartFormdataArrayOfBinaryWithHttpInfo(response);
+}
+
+/**
+ * Test array of binary in multipart mime
+ * Test array of binary in multipart mime
+ * @param configuration The configuration object
+ * @param files 
+ */
+export async function testBodyMultipartFormdataArrayOfBinary(
+    configuration: Configuration,
+    files: Array<HttpFile>
+): Promise<string> {
+    const httpInfo = await testBodyMultipartFormdataArrayOfBinaryWithHttpInfo(configuration, files);
+    return httpInfo.data;
+}
+
+/**
+ * Test single binary in multipart mime
+ * Test single binary in multipart mime
+ * @param configuration The configuration object
+ * @param myFile 
+ */
+export async function testBodyMultipartFormdataSingleBinaryWithHttpInfo(
+    configuration: Configuration,
+    myFile?: HttpFile
+): Promise<HttpInfo<string>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testBodyMultipartFormdataSingleBinary(myFile);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testBodyMultipartFormdataSingleBinaryWithHttpInfo(response);
+}
+
+/**
+ * Test single binary in multipart mime
+ * Test single binary in multipart mime
+ * @param configuration The configuration object
+ * @param myFile 
+ */
+export async function testBodyMultipartFormdataSingleBinary(
+    configuration: Configuration,
+    myFile?: HttpFile
+): Promise<string> {
+    const httpInfo = await testBodyMultipartFormdataSingleBinaryWithHttpInfo(configuration, myFile);
+    return httpInfo.data;
+}
+
+/**
+ * Test body parameter(s)
+ * Test body parameter(s)
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function testEchoBodyAllOfPetWithHttpInfo(
+    configuration: Configuration,
+    pet?: Pet
+): Promise<HttpInfo<Pet>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEchoBodyAllOfPet(pet);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEchoBodyAllOfPetWithHttpInfo(response);
+}
+
+/**
+ * Test body parameter(s)
+ * Test body parameter(s)
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function testEchoBodyAllOfPet(
+    configuration: Configuration,
+    pet?: Pet
+): Promise<Pet> {
+    const httpInfo = await testEchoBodyAllOfPetWithHttpInfo(configuration, pet);
+    return httpInfo.data;
+}
+
+/**
+ * Test free form object
+ * Test free form object
+ * @param configuration The configuration object
+ * @param body Free form object
+ */
+export async function testEchoBodyFreeFormObjectResponseStringWithHttpInfo(
+    configuration: Configuration,
+    body?: any
+): Promise<HttpInfo<string>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEchoBodyFreeFormObjectResponseString(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEchoBodyFreeFormObjectResponseStringWithHttpInfo(response);
+}
+
+/**
+ * Test free form object
+ * Test free form object
+ * @param configuration The configuration object
+ * @param body Free form object
+ */
+export async function testEchoBodyFreeFormObjectResponseString(
+    configuration: Configuration,
+    body?: any
+): Promise<string> {
+    const httpInfo = await testEchoBodyFreeFormObjectResponseStringWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * Test body parameter(s)
+ * Test body parameter(s)
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function testEchoBodyPetWithHttpInfo(
+    configuration: Configuration,
+    pet?: Pet
+): Promise<HttpInfo<Pet>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEchoBodyPet(pet);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEchoBodyPetWithHttpInfo(response);
+}
+
+/**
+ * Test body parameter(s)
+ * Test body parameter(s)
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function testEchoBodyPet(
+    configuration: Configuration,
+    pet?: Pet
+): Promise<Pet> {
+    const httpInfo = await testEchoBodyPetWithHttpInfo(configuration, pet);
+    return httpInfo.data;
+}
+
+/**
+ * Test empty response body
+ * Test empty response body
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function testEchoBodyPetResponseStringWithHttpInfo(
+    configuration: Configuration,
+    pet?: Pet
+): Promise<HttpInfo<string>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEchoBodyPetResponseString(pet);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEchoBodyPetResponseStringWithHttpInfo(response);
+}
+
+/**
+ * Test empty response body
+ * Test empty response body
+ * @param configuration The configuration object
+ * @param pet Pet object that needs to be added to the store
+ */
+export async function testEchoBodyPetResponseString(
+    configuration: Configuration,
+    pet?: Pet
+): Promise<string> {
+    const httpInfo = await testEchoBodyPetResponseStringWithHttpInfo(configuration, pet);
+    return httpInfo.data;
+}
+
+/**
+ * Test string enum response body
+ * Test string enum response body
+ * @param configuration The configuration object
+ * @param body String enum
+ */
+export async function testEchoBodyStringEnumWithHttpInfo(
+    configuration: Configuration,
+    body?: string
+): Promise<HttpInfo<StringEnumRef>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEchoBodyStringEnum(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEchoBodyStringEnumWithHttpInfo(response);
+}
+
+/**
+ * Test string enum response body
+ * Test string enum response body
+ * @param configuration The configuration object
+ * @param body String enum
+ */
+export async function testEchoBodyStringEnum(
+    configuration: Configuration,
+    body?: string
+): Promise<StringEnumRef> {
+    const httpInfo = await testEchoBodyStringEnumWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * Test empty json (request body)
+ * Test empty json (request body)
+ * @param configuration The configuration object
+ * @param tag Tag object
+ */
+export async function testEchoBodyTagResponseStringWithHttpInfo(
+    configuration: Configuration,
+    tag?: Tag
+): Promise<HttpInfo<string>> {
+    const requestFactory = new BodyApiRequestFactory(configuration);
+    const responseProcessor = new BodyApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEchoBodyTagResponseString(tag);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEchoBodyTagResponseStringWithHttpInfo(response);
+}
+
+/**
+ * Test empty json (request body)
+ * Test empty json (request body)
+ * @param configuration The configuration object
+ * @param tag Tag object
+ */
+export async function testEchoBodyTagResponseString(
+    configuration: Configuration,
+    tag?: Tag
+): Promise<string> {
+    const httpInfo = await testEchoBodyTagResponseStringWithHttpInfo(configuration, tag);
+    return httpInfo.data;
+}
+

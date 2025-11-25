@@ -10,4 +10,7 @@ export { RequiredError } from "./apis/baseapi.ts";
 export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddleware } from './middleware.ts';
 export { Observable } from './rxjsStub.ts';
 export { PromisePetApi as PetApi,  PromiseStoreApi as StoreApi,  PromiseUserApi as UserApi } from './types/PromiseAPI.ts';
+export * from './apis/PetApi.ts';
+export * from './apis/StoreApi.ts';
+export * from './apis/UserApi.ts';
 

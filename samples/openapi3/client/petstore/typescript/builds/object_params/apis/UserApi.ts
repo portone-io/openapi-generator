@@ -569,3 +569,272 @@ export class UserApiResponseProcessor {
     }
 
 }
+
+/**
+ * This can only be done by the logged in user.
+ * Create user
+ * @param configuration The configuration object
+ * @param user Created user object
+ */
+export async function createUserWithHttpInfo(
+    configuration: Configuration,
+    user: User
+): Promise<HttpInfo<void>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.createUser(user);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.createUserWithHttpInfo(response);
+}
+
+/**
+ * This can only be done by the logged in user.
+ * Create user
+ * @param configuration The configuration object
+ * @param user Created user object
+ */
+export async function createUser(
+    configuration: Configuration,
+    user: User
+): Promise<void> {
+    const httpInfo = await createUserWithHttpInfo(configuration, user);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Creates list of users with given input array
+ * @param configuration The configuration object
+ * @param user List of user object
+ */
+export async function createUsersWithArrayInputWithHttpInfo(
+    configuration: Configuration,
+    user: Array<User>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.createUsersWithArrayInput(user);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.createUsersWithArrayInputWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Creates list of users with given input array
+ * @param configuration The configuration object
+ * @param user List of user object
+ */
+export async function createUsersWithArrayInput(
+    configuration: Configuration,
+    user: Array<User>
+): Promise<void> {
+    const httpInfo = await createUsersWithArrayInputWithHttpInfo(configuration, user);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Creates list of users with given input array
+ * @param configuration The configuration object
+ * @param user List of user object
+ */
+export async function createUsersWithListInputWithHttpInfo(
+    configuration: Configuration,
+    user: Array<User>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.createUsersWithListInput(user);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.createUsersWithListInputWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Creates list of users with given input array
+ * @param configuration The configuration object
+ * @param user List of user object
+ */
+export async function createUsersWithListInput(
+    configuration: Configuration,
+    user: Array<User>
+): Promise<void> {
+    const httpInfo = await createUsersWithListInputWithHttpInfo(configuration, user);
+    return httpInfo.data;
+}
+
+/**
+ * This can only be done by the logged in user.
+ * Delete user
+ * @param configuration The configuration object
+ * @param username The name that needs to be deleted
+ */
+export async function deleteUserWithHttpInfo(
+    configuration: Configuration,
+    username: string
+): Promise<HttpInfo<void>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.deleteUser(username);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.deleteUserWithHttpInfo(response);
+}
+
+/**
+ * This can only be done by the logged in user.
+ * Delete user
+ * @param configuration The configuration object
+ * @param username The name that needs to be deleted
+ */
+export async function deleteUser(
+    configuration: Configuration,
+    username: string
+): Promise<void> {
+    const httpInfo = await deleteUserWithHttpInfo(configuration, username);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Get user by user name
+ * @param configuration The configuration object
+ * @param username The name that needs to be fetched. Use user1 for testing.
+ */
+export async function getUserByNameWithHttpInfo(
+    configuration: Configuration,
+    username: string
+): Promise<HttpInfo<User>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.getUserByName(username);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.getUserByNameWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Get user by user name
+ * @param configuration The configuration object
+ * @param username The name that needs to be fetched. Use user1 for testing.
+ */
+export async function getUserByName(
+    configuration: Configuration,
+    username: string
+): Promise<User> {
+    const httpInfo = await getUserByNameWithHttpInfo(configuration, username);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Logs user into the system
+ * @param configuration The configuration object
+ * @param username The user name for login
+ * @param password The password for login in clear text
+ */
+export async function loginUserWithHttpInfo(
+    configuration: Configuration,
+    username: string,
+    password: string
+): Promise<HttpInfo<string>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.loginUser(username, password);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.loginUserWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Logs user into the system
+ * @param configuration The configuration object
+ * @param username The user name for login
+ * @param password The password for login in clear text
+ */
+export async function loginUser(
+    configuration: Configuration,
+    username: string,
+    password: string
+): Promise<string> {
+    const httpInfo = await loginUserWithHttpInfo(configuration, username, password);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Logs out current logged in user session
+ * @param configuration The configuration object
+ */
+export async function logoutUserWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<void>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.logoutUser();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.logoutUserWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Logs out current logged in user session
+ * @param configuration The configuration object
+ */
+export async function logoutUser(
+    configuration: Configuration
+): Promise<void> {
+    const httpInfo = await logoutUserWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * This can only be done by the logged in user.
+ * Updated user
+ * @param configuration The configuration object
+ * @param username name that need to be deleted
+ * @param user Updated user object
+ */
+export async function updateUserWithHttpInfo(
+    configuration: Configuration,
+    username: string,
+    user: User
+): Promise<HttpInfo<void>> {
+    const requestFactory = new UserApiRequestFactory(configuration);
+    const responseProcessor = new UserApiResponseProcessor();
+
+    const requestContext = await requestFactory.updateUser(username, user);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.updateUserWithHttpInfo(response);
+}
+
+/**
+ * This can only be done by the logged in user.
+ * Updated user
+ * @param configuration The configuration object
+ * @param username name that need to be deleted
+ * @param user Updated user object
+ */
+export async function updateUser(
+    configuration: Configuration,
+    username: string,
+    user: User
+): Promise<void> {
+    const httpInfo = await updateUserWithHttpInfo(configuration, username, user);
+    return httpInfo.data;
+}
+

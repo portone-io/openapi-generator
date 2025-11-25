@@ -278,3 +278,132 @@ export class StoreApiResponseProcessor {
     }
 
 }
+
+/**
+ * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+ * Delete purchase order by ID
+ * @param configuration The configuration object
+ * @param orderId ID of the order that needs to be deleted
+ */
+export async function deleteOrderWithHttpInfo(
+    configuration: Configuration,
+    orderId: string
+): Promise<HttpInfo<void>> {
+    const requestFactory = new StoreApiRequestFactory(configuration);
+    const responseProcessor = new StoreApiResponseProcessor();
+
+    const requestContext = await requestFactory.deleteOrder(orderId);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.deleteOrderWithHttpInfo(response);
+}
+
+/**
+ * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+ * Delete purchase order by ID
+ * @param configuration The configuration object
+ * @param orderId ID of the order that needs to be deleted
+ */
+export async function deleteOrder(
+    configuration: Configuration,
+    orderId: string
+): Promise<void> {
+    const httpInfo = await deleteOrderWithHttpInfo(configuration, orderId);
+    return httpInfo.data;
+}
+
+/**
+ * Returns a map of status codes to quantities
+ * Returns pet inventories by status
+ * @param configuration The configuration object
+ */
+export async function getInventoryWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<{ [key: string]: number; }>> {
+    const requestFactory = new StoreApiRequestFactory(configuration);
+    const responseProcessor = new StoreApiResponseProcessor();
+
+    const requestContext = await requestFactory.getInventory();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.getInventoryWithHttpInfo(response);
+}
+
+/**
+ * Returns a map of status codes to quantities
+ * Returns pet inventories by status
+ * @param configuration The configuration object
+ */
+export async function getInventory(
+    configuration: Configuration
+): Promise<{ [key: string]: number; }> {
+    const httpInfo = await getInventoryWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions
+ * Find purchase order by ID
+ * @param configuration The configuration object
+ * @param orderId ID of pet that needs to be fetched
+ */
+export async function getOrderByIdWithHttpInfo(
+    configuration: Configuration,
+    orderId: number
+): Promise<HttpInfo<Order>> {
+    const requestFactory = new StoreApiRequestFactory(configuration);
+    const responseProcessor = new StoreApiResponseProcessor();
+
+    const requestContext = await requestFactory.getOrderById(orderId);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.getOrderByIdWithHttpInfo(response);
+}
+
+/**
+ * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions
+ * Find purchase order by ID
+ * @param configuration The configuration object
+ * @param orderId ID of pet that needs to be fetched
+ */
+export async function getOrderById(
+    configuration: Configuration,
+    orderId: number
+): Promise<Order> {
+    const httpInfo = await getOrderByIdWithHttpInfo(configuration, orderId);
+    return httpInfo.data;
+}
+
+/**
+ * 
+ * Place an order for a pet
+ * @param configuration The configuration object
+ * @param order order placed for purchasing the pet
+ */
+export async function placeOrderWithHttpInfo(
+    configuration: Configuration,
+    order: Order
+): Promise<HttpInfo<Order>> {
+    const requestFactory = new StoreApiRequestFactory(configuration);
+    const responseProcessor = new StoreApiResponseProcessor();
+
+    const requestContext = await requestFactory.placeOrder(order);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.placeOrderWithHttpInfo(response);
+}
+
+/**
+ * 
+ * Place an order for a pet
+ * @param configuration The configuration object
+ * @param order order placed for purchasing the pet
+ */
+export async function placeOrder(
+    configuration: Configuration,
+    order: Order
+): Promise<Order> {
+    const httpInfo = await placeOrderWithHttpInfo(configuration, order);
+    return httpInfo.data;
+}
+

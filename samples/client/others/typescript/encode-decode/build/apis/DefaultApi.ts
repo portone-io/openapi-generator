@@ -1869,3 +1869,868 @@ export class DefaultApiResponseProcessor {
     }
 
 }
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfArraysGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<Array<Array<string>>>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeArrayOfArraysGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeArrayOfArraysGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfArraysGet(
+    configuration: Configuration
+): Promise<Array<Array<string>>> {
+    const httpInfo = await testDecodeArrayOfArraysGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<Array<string>>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeArrayOfGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeArrayOfGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfGet(
+    configuration: Configuration
+): Promise<Array<string>> {
+    const httpInfo = await testDecodeArrayOfGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfMapsOfObjectsGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<Array<{ [key: string]: ComplexObject; }>>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeArrayOfMapsOfObjectsGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeArrayOfMapsOfObjectsGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfMapsOfObjectsGet(
+    configuration: Configuration
+): Promise<Array<{ [key: string]: ComplexObject; }>> {
+    const httpInfo = await testDecodeArrayOfMapsOfObjectsGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfNullableGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<Array<string | null>>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeArrayOfNullableGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeArrayOfNullableGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfNullableGet(
+    configuration: Configuration
+): Promise<Array<string | null>> {
+    const httpInfo = await testDecodeArrayOfNullableGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfNullableObjectsGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<Array<ComplexObject>>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeArrayOfNullableObjectsGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeArrayOfNullableObjectsGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeArrayOfNullableObjectsGet(
+    configuration: Configuration
+): Promise<Array<ComplexObject>> {
+    const httpInfo = await testDecodeArrayOfNullableObjectsGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeCompositeObjectsGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<CompositeObject>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeCompositeObjectsGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeCompositeObjectsGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeCompositeObjectsGet(
+    configuration: Configuration
+): Promise<CompositeObject> {
+    const httpInfo = await testDecodeCompositeObjectsGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeMapOfMapsOfObjectsGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<{ [key: string]: { [key: string]: ComplexObject; }; }>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeMapOfMapsOfObjectsGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeMapOfMapsOfObjectsGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeMapOfMapsOfObjectsGet(
+    configuration: Configuration
+): Promise<{ [key: string]: { [key: string]: ComplexObject; }; }> {
+    const httpInfo = await testDecodeMapOfMapsOfObjectsGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeMapOfObjectsGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<{ [key: string]: ComplexObject | null; }>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeMapOfObjectsGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeMapOfObjectsGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeMapOfObjectsGet(
+    configuration: Configuration
+): Promise<{ [key: string]: ComplexObject | null; }> {
+    const httpInfo = await testDecodeMapOfObjectsGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeMapOfPrimitiveGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<{ [key: string]: string; }>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeMapOfPrimitiveGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeMapOfPrimitiveGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeMapOfPrimitiveGet(
+    configuration: Configuration
+): Promise<{ [key: string]: string; }> {
+    const httpInfo = await testDecodeMapOfPrimitiveGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeNullableArrayGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<Array<string>>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeNullableArrayGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeNullableArrayGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeNullableArrayGet(
+    configuration: Configuration
+): Promise<Array<string>> {
+    const httpInfo = await testDecodeNullableArrayGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeNullableGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<string>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeNullableGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeNullableGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeNullableGet(
+    configuration: Configuration
+): Promise<string> {
+    const httpInfo = await testDecodeNullableGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeObjectGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<ComplexObject>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodeObjectGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodeObjectGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodeObjectGet(
+    configuration: Configuration
+): Promise<ComplexObject> {
+    const httpInfo = await testDecodeObjectGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveBooleanGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<boolean>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodePrimitiveBooleanGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodePrimitiveBooleanGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveBooleanGet(
+    configuration: Configuration
+): Promise<boolean> {
+    const httpInfo = await testDecodePrimitiveBooleanGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveIntegerGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<number>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodePrimitiveIntegerGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodePrimitiveIntegerGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveIntegerGet(
+    configuration: Configuration
+): Promise<number> {
+    const httpInfo = await testDecodePrimitiveIntegerGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveNumberGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<number>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodePrimitiveNumberGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodePrimitiveNumberGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveNumberGet(
+    configuration: Configuration
+): Promise<number> {
+    const httpInfo = await testDecodePrimitiveNumberGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveStringGetWithHttpInfo(
+    configuration: Configuration
+): Promise<HttpInfo<string>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testDecodePrimitiveStringGet();
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testDecodePrimitiveStringGetWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ */
+export async function testDecodePrimitiveStringGet(
+    configuration: Configuration
+): Promise<string> {
+    const httpInfo = await testDecodePrimitiveStringGetWithHttpInfo(configuration);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeArrayOfArraysPostWithHttpInfo(
+    configuration: Configuration,
+    requestBody: Array<Array<string>>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeArrayOfArraysPost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeArrayOfArraysPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeArrayOfArraysPost(
+    configuration: Configuration,
+    requestBody: Array<Array<string>>
+): Promise<void> {
+    const httpInfo = await testEncodeArrayOfArraysPostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param complexObject 
+ */
+export async function testEncodeArrayOfMapsOfObjectsPostWithHttpInfo(
+    configuration: Configuration,
+    complexObject: Array<{ [key: string]: ComplexObject; }>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeArrayOfMapsOfObjectsPost(complexObject);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeArrayOfMapsOfObjectsPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param complexObject 
+ */
+export async function testEncodeArrayOfMapsOfObjectsPost(
+    configuration: Configuration,
+    complexObject: Array<{ [key: string]: ComplexObject; }>
+): Promise<void> {
+    const httpInfo = await testEncodeArrayOfMapsOfObjectsPostWithHttpInfo(configuration, complexObject);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param complexObject 
+ */
+export async function testEncodeArrayOfNullableObjectsPostWithHttpInfo(
+    configuration: Configuration,
+    complexObject: Array<ComplexObject>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeArrayOfNullableObjectsPost(complexObject);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeArrayOfNullableObjectsPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param complexObject 
+ */
+export async function testEncodeArrayOfNullableObjectsPost(
+    configuration: Configuration,
+    complexObject: Array<ComplexObject>
+): Promise<void> {
+    const httpInfo = await testEncodeArrayOfNullableObjectsPostWithHttpInfo(configuration, complexObject);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeArrayOfNullablePostWithHttpInfo(
+    configuration: Configuration,
+    requestBody: Array<string | null>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeArrayOfNullablePost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeArrayOfNullablePostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeArrayOfNullablePost(
+    configuration: Configuration,
+    requestBody: Array<string | null>
+): Promise<void> {
+    const httpInfo = await testEncodeArrayOfNullablePostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeArrayOfPostWithHttpInfo(
+    configuration: Configuration,
+    requestBody: Array<string>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeArrayOfPost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeArrayOfPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeArrayOfPost(
+    configuration: Configuration,
+    requestBody: Array<string>
+): Promise<void> {
+    const httpInfo = await testEncodeArrayOfPostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param compositeObject 
+ */
+export async function testEncodeCompositeObjectsPostWithHttpInfo(
+    configuration: Configuration,
+    compositeObject: CompositeObject
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeCompositeObjectsPost(compositeObject);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeCompositeObjectsPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param compositeObject 
+ */
+export async function testEncodeCompositeObjectsPost(
+    configuration: Configuration,
+    compositeObject: CompositeObject
+): Promise<void> {
+    const httpInfo = await testEncodeCompositeObjectsPostWithHttpInfo(configuration, compositeObject);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeMapOfMapsOfObjectsPostWithHttpInfo(
+    configuration: Configuration,
+    requestBody: { [key: string]: { [key: string]: ComplexObject; }; }
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeMapOfMapsOfObjectsPost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeMapOfMapsOfObjectsPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeMapOfMapsOfObjectsPost(
+    configuration: Configuration,
+    requestBody: { [key: string]: { [key: string]: ComplexObject; }; }
+): Promise<void> {
+    const httpInfo = await testEncodeMapOfMapsOfObjectsPostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeMapOfObjectsPostWithHttpInfo(
+    configuration: Configuration,
+    requestBody: { [key: string]: ComplexObject | null; }
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeMapOfObjectsPost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeMapOfObjectsPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeMapOfObjectsPost(
+    configuration: Configuration,
+    requestBody: { [key: string]: ComplexObject | null; }
+): Promise<void> {
+    const httpInfo = await testEncodeMapOfObjectsPostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeMapOfPrimitivePostWithHttpInfo(
+    configuration: Configuration,
+    requestBody: { [key: string]: string; }
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeMapOfPrimitivePost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeMapOfPrimitivePostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeMapOfPrimitivePost(
+    configuration: Configuration,
+    requestBody: { [key: string]: string; }
+): Promise<void> {
+    const httpInfo = await testEncodeMapOfPrimitivePostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeNullableArrayPostWithHttpInfo(
+    configuration: Configuration,
+    requestBody?: Array<string>
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeNullableArrayPost(requestBody);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeNullableArrayPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param requestBody 
+ */
+export async function testEncodeNullableArrayPost(
+    configuration: Configuration,
+    requestBody?: Array<string>
+): Promise<void> {
+    const httpInfo = await testEncodeNullableArrayPostWithHttpInfo(configuration, requestBody);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodeNullablePostWithHttpInfo(
+    configuration: Configuration,
+    body?: string
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeNullablePost(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeNullablePostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodeNullablePost(
+    configuration: Configuration,
+    body?: string
+): Promise<void> {
+    const httpInfo = await testEncodeNullablePostWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param complexObject 
+ */
+export async function testEncodeObjectPostWithHttpInfo(
+    configuration: Configuration,
+    complexObject: ComplexObject
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodeObjectPost(complexObject);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodeObjectPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param complexObject 
+ */
+export async function testEncodeObjectPost(
+    configuration: Configuration,
+    complexObject: ComplexObject
+): Promise<void> {
+    const httpInfo = await testEncodeObjectPostWithHttpInfo(configuration, complexObject);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveBooleanPostWithHttpInfo(
+    configuration: Configuration,
+    body: boolean
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodePrimitiveBooleanPost(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodePrimitiveBooleanPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveBooleanPost(
+    configuration: Configuration,
+    body: boolean
+): Promise<void> {
+    const httpInfo = await testEncodePrimitiveBooleanPostWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveIntegerPostWithHttpInfo(
+    configuration: Configuration,
+    body: number
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodePrimitiveIntegerPost(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodePrimitiveIntegerPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveIntegerPost(
+    configuration: Configuration,
+    body: number
+): Promise<void> {
+    const httpInfo = await testEncodePrimitiveIntegerPostWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveNumberPostWithHttpInfo(
+    configuration: Configuration,
+    body: number
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodePrimitiveNumberPost(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodePrimitiveNumberPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveNumberPost(
+    configuration: Configuration,
+    body: number
+): Promise<void> {
+    const httpInfo = await testEncodePrimitiveNumberPostWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveStringPostWithHttpInfo(
+    configuration: Configuration,
+    body: string
+): Promise<HttpInfo<void>> {
+    const requestFactory = new DefaultApiRequestFactory(configuration);
+    const responseProcessor = new DefaultApiResponseProcessor();
+
+    const requestContext = await requestFactory.testEncodePrimitiveStringPost(body);
+    const response = await configuration.httpApi.send(requestContext).toPromise();
+
+    return await responseProcessor.testEncodePrimitiveStringPostWithHttpInfo(response);
+}
+
+/**
+ * @param configuration The configuration object
+ * @param body 
+ */
+export async function testEncodePrimitiveStringPost(
+    configuration: Configuration,
+    body: string
+): Promise<void> {
+    const httpInfo = await testEncodePrimitiveStringPostWithHttpInfo(configuration, body);
+    return httpInfo.data;
+}
+
