@@ -230,7 +230,7 @@ public class TypeScriptClientCodegenTest {
         final List<File> files = generator.opts(clientOptInput).generate();
         files.forEach(File::deleteOnExit);
 
-        // verify operation is deprecated
+        // verify operation is deprecated in api.mustache (RequestFactory)
         Path file = Paths.get(output + "/apis/DefaultApi.ts");
         TestUtils.assertFileContains(
                 file,
@@ -238,7 +238,12 @@ public class TypeScriptClientCodegenTest {
         );
 
         String content = Files.readString(file);
-        assertEquals(3, TestUtils.countOccurrences(content, "@deprecated"));
+        assertEquals(1, TestUtils.countOccurrences(content, "@deprecated"));
+
+        // verify operation is deprecated in function.mustache (Function handlers)
+        Path functionFile = Paths.get(output + "/apis/DefaultApiFunction.ts");
+        String functionContent = Files.readString(functionFile);
+        assertEquals(3, TestUtils.countOccurrences(functionContent, "@deprecated"));
     }
 
     @Test
@@ -256,7 +261,7 @@ public class TypeScriptClientCodegenTest {
         final List<File> files = generator.opts(clientOptInput).generate();
         files.forEach(File::deleteOnExit);
 
-        // verify parameter is deprecated parameter
+        // verify parameter is deprecated parameter in api.mustache
         Path file = Paths.get(output + "/apis/DefaultApi.ts");
         TestUtils.assertFileContains(
                 file,
@@ -264,7 +269,12 @@ public class TypeScriptClientCodegenTest {
         );
 
         String content = Files.readString(file);
-        assertEquals(3, TestUtils.countOccurrences(content, "@deprecated"));
+        assertEquals(1, TestUtils.countOccurrences(content, "@deprecated"));
+
+        // verify parameter is deprecated in function.mustache
+        Path functionFile = Paths.get(output + "/apis/DefaultApiFunction.ts");
+        String functionContent = Files.readString(functionFile);
+        assertEquals(3, TestUtils.countOccurrences(functionContent, "@deprecated"));
     }
 
     @Test
