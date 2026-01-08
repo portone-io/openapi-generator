@@ -11,4 +11,5 @@ export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddlewar
 export { Observable } from './rxjsStub';
 export { PromiseDefaultApi as DefaultApi } from './types/PromiseAPI';
 export * from './apis/DefaultApi';
+export * from './apis/DefaultApiFunction';
 

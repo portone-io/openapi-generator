@@ -11,6 +11,9 @@ export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddlewar
 export { Observable } from './rxjsStub.ts';
 export { type PetApiAddPetRequest, type PetApiDeletePetRequest, type PetApiFindPetsByStatusRequest, type PetApiFindPetsByTagsRequest, type PetApiGetPetByIdRequest, type PetApiUpdatePetRequest, type PetApiUpdatePetWithFormRequest, type PetApiUploadFileRequest, ObjectPetApi as PetApi,  type StoreApiDeleteOrderRequest, type StoreApiGetInventoryRequest, type StoreApiGetOrderByIdRequest, type StoreApiPlaceOrderRequest, ObjectStoreApi as StoreApi,  type UserApiCreateUserRequest, type UserApiCreateUsersWithArrayInputRequest, type UserApiCreateUsersWithListInputRequest, type UserApiDeleteUserRequest, type UserApiGetUserByNameRequest, type UserApiLoginUserRequest, type UserApiLogoutUserRequest, type UserApiUpdateUserRequest, ObjectUserApi as UserApi } from './types/ObjectParamAPI.ts';
 export * from './apis/PetApi.ts';
+export * from './apis/PetApiFunction.ts';
 export * from './apis/StoreApi.ts';
+export * from './apis/StoreApiFunction.ts';
 export * from './apis/UserApi.ts';
+export * from './apis/UserApiFunction.ts';
 

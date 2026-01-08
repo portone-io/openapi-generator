@@ -1,8 +1,11 @@
 .gitattributes
 .gitignore
 apis/PetApi.ts
+apis/PetApiFunction.ts
 apis/StoreApi.ts
+apis/StoreApiFunction.ts
 apis/UserApi.ts
+apis/UserApiFunction.ts
 apis/baseapi.ts
 apis/exception.ts
 auth/auth.ts

@@ -193,6 +193,8 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
         supportingFiles.add(new SupportingFile("api" + File.separator + "middleware.mustache", "", "middleware.ts"));
         supportingFiles.add(new SupportingFile("api" + File.separator + "baseapi.mustache", "apis", "baseapi.ts"));
         apiTemplateFiles.put("api" + File.separator + "api.mustache", ".ts");
+        apiTemplateFiles.put("api" + File.separator + "function.mustache", "Function.ts");
+
         apiDocTemplateFiles.put("api_doc.mustache", ".md");
     }
 
