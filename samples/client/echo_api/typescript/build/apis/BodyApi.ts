@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import * as FormData from "form-data";
 import { URLSearchParams } from 'url';
 import {ObjectSerializer} from '../models/ObjectSerializer';
@@ -425,7 +425,7 @@ export class BodyApiResponseProcessor {
      public async testBinaryGifWithHttpInfo(response: ResponseContext): Promise<HttpInfo<HttpFile >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
         if (isCodeInRange("200", response.httpStatusCode)) {
-            const body: HttpFile = await response.getBodyAsFile() as any as HttpFile;
+            const body: HttpFile = response.getBodyAsStream() as HttpFile;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
 

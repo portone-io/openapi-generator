@@ -1,6 +1,6 @@
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi{{importFileExtension}}';
 import {Configuration} from '../configuration{{importFileExtension}}';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http{{importFileExtension}}';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http{{importFileExtension}}';
 {{#platforms}}
 {{#node}}
 import {{^supportsES6}}* as{{/supportsES6}} FormData from "form-data";
@@ -209,7 +209,7 @@ const contentType = ObjectSerializer.normalizeMediaType(response.headers["conten
 if (isCodeInRange("{{code}}", response.httpStatusCode)) {
 {{#dataType}}
 {{#isBinary}}
-const body: {{{dataType}}} = await response.getBodyAsFile() as any as {{{returnType}}};
+const body: {{{dataType}}} = response.getBodyAsStream() as {{{returnType}}};
 {{/isBinary}}
 {{^isBinary}}
 const body: {{{dataType}}} = ObjectSerializer.deserialize(
@@ -239,7 +239,7 @@ throw new ApiException<undefined>(response.httpStatusCode, "{{message}}", undefi
 if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
 {{#returnType}}
 {{#isBinary}}
-const body: {{{returnType}}} = await response.getBodyAsFile() as any as {{{returnType}}};
+const body: {{{returnType}}} = response.getBodyAsStream() as {{{returnType}}};
 {{/isBinary}}
 {{^isBinary}}
 const body: {{{returnType}}} = ObjectSerializer.deserialize(

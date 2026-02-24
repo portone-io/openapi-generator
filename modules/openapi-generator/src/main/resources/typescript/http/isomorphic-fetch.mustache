@@ -38,13 +38,15 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
             {{#node}}
             const body = {
               text: () => resp.text(),
-              binary: () => resp.buffer()
+              binary: () => resp.buffer(),
+              stream: () => resp.body as NodeJS.ReadableStream
             };
             {{/node}}
             {{^node}}
             const body = {
               text: () => resp.text(),
-              binary: () => resp.blob()
+              binary: () => resp.blob(),
+              stream: () => resp.body as ReadableStream<Uint8Array>
             };
             {{/node}}
             {{/platforms}}
