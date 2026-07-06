@@ -79,10 +79,20 @@ export class Pet {
     }
 }
 
+<<<<<<< HEAD
     export type PetStatusEnum =  "available" | "pending" | "sold" ;
     export const PetStatusEnum = {
         Available: 'available',
         Pending: 'pending',
         Sold: 'sold'
     } as const;
+||||||| 753330dd998
+export enum PetStatusEnum {
+    Available = 'available',
+    Pending = 'pending',
+    Sold = 'sold'
+}
+=======
+    export type PetStatusEnum = "available" | "pending" | "sold" ;
+>>>>>>> mirror/master
 

@@ -16,7 +16,13 @@ const pet = new petstore.Pet()
 pet.id = Math.floor(Math.random() * 100000)
 pet.name = "PetName"
 pet.photoUrls = []
+<<<<<<< HEAD
 pet.status = "available"
+||||||| 753330dd998
+pet.status = petstore.PetStatusEnum.Available
+=======
+pet.status = 'available'
+>>>>>>> mirror/master
 pet.tags = [ tag ]
 
 QUnit.module("PetApi")

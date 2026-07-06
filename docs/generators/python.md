@@ -10,7 +10,7 @@ title: Documentation for the python Generator
 | generator stability | STABLE | |
 | generator type | CLIENT | |
 | generator language | Python | |
-| generator language version | 3.9+ | |
+| generator language version | 3.10+ | |
 | generator default templating engine | mustache | |
 | helpTxt | Generates a Python client library. | |
 
@@ -19,6 +19,7 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 
 | Option | Description | Values | Default |
 | ------ | ----------- | ------ | ------- |
+|buildSystem|Build system to use in pyproject.toml (setuptools, hatchling).| |setuptools|
 |dateFormat|date format for query parameters| |%Y-%m-%d|
 |datetimeFormat|datetime format for query parameters| |%Y-%m-%dT%H:%M:%S%z|
 |disallowAdditionalPropertiesIfNotPresent|If false, the 'additionalProperties' implementation (set to true by default) is compliant with the OAS and JSON schema specifications. If true (default), keep the old (incorrect) behaviour that 'additionalProperties' is set to false by default.|<dl><dt>**false**</dt><dd>The 'additionalProperties' implementation is compliant with the OAS and JSON schema specifications.</dd><dt>**true**</dt><dd>Keep the old (incorrect) behaviour that 'additionalProperties' is set to false by default.</dd></dl>|true|
@@ -26,7 +27,7 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 |hideGenerationTimestamp|Hides the generation timestamp when files are generated.| |true|
 |lazyImports|Enable lazy imports.| |false|
 |library|library template (sub-template) to use: asyncio, tornado (deprecated), urllib3, httpx| |urllib3|
-|mapNumberTo|Map number to Union[StrictFloat, StrictInt], StrictStr or float.| |Union[StrictFloat, StrictInt]|
+|mapNumberTo|Map number to Union[StrictFloat, StrictInt], StrictFloat, float or Decimal.| |Union[StrictFloat, StrictInt]|
 |packageName|python package name (convention: snake_case).| |openapi_client|
 |packageUrl|python package URL.| |null|
 |packageVersion|python package version.| |1.0.0|
@@ -34,6 +35,7 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 |projectName|python project name in setup.py (e.g. petstore-api).| |null|
 |recursionLimit|Set the recursion limit. If not set, use the system default value.| |null|
 |setEnsureAsciiToFalse|When set to true, add `ensure_ascii=False` in json.dumps when creating the HTTP request body.| |false|
+|supportHttpxSync|Generate synchronous '_sync' variants of each API method (httpx library only). Each '_sync' method simply calls the corresponding async method and waits for its completion, so both synchronous and asynchronous methods are available from the same API class.| |false|
 |useOneOfDiscriminatorLookup|Use the discriminator's mapping in oneOf to speed up the model lookup. IMPORTANT: Validation (e.g. one and only one match in oneOf's schemas) will be skipped.| |false|
 
 ## IMPORT MAPPING
@@ -55,7 +57,6 @@ These options may be applied as additional-properties (cli) or configOptions (pl
 <li>List</li>
 <li>UUID</li>
 <li>bool</li>
-<li>bytearray</li>
 <li>bytes</li>
 <li>date</li>
 <li>datetime</li>
