@@ -17,6 +17,9 @@
 package org.openapitools.codegen.languages;
 
 import com.github.curiousoddman.rgxgen.RgxGen;
+import com.google.common.collect.ImmutableMap;
+import com.samskivert.mustache.Mustache;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -41,8 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.openapitools.codegen.CodegenConstants.X_MODIFIERS;
-import static org.openapitools.codegen.CodegenConstants.X_REGEX;
+import static org.openapitools.codegen.CodegenConstants.*;
 import static org.openapitools.codegen.utils.StringUtils.*;
 
 
@@ -50,6 +52,9 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractPythonCodegen.class);
 
     public static final String MAP_NUMBER_TO = "mapNumberTo";
+    public static final String PYDANTIC = "pydantic";
+    public static final Set<String> SUPPORTED_NUMBER_MAPPINGS =
+            Set.of("Union[StrictFloat, StrictInt]", "StrictFloat", "float", "Decimal");
 
     protected String packageName = "openapi_client";
     @Setter protected String packageVersion = "1.0.0";
@@ -245,6 +250,10 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             return nameMapping.get(name);
         }
 
+        return toVarNameWithoutNameMapping(name);
+    }
+
+    private String toVarNameWithoutNameMapping(String name) {
         // sanitize name
         name = sanitizeName(name); // FIXME: a parameter should not be assigned. Also declare the methods parameters as 'final'.
 
@@ -288,8 +297,8 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             return "param_callback";
         }
 
-        // should be the same as variable name
-        return toVarName(name);
+        // use variable-name normalization without model property mappings
+        return toVarNameWithoutNameMapping(name);
     }
 
     @Override
@@ -512,7 +521,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
             // if required and optionals
             List<String> reqs = new ArrayList<>();
-            if (schema.getProperties() != null && !schema.getProperties().isEmpty()) {
+            if (ModelUtils.hasProperties(schema)) {
                 for (Object toAdd : schema.getProperties().keySet()) {
                     reqs.add((String) toAdd);
                 }
@@ -635,16 +644,100 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
         if (parameter.getExample() != null) {
             codegenParameter.example = parameter.getExample().toString();
+            codegenParameter.vendorExtensions.put(X_PY_EXAMPLE, toPythonLiteral(parameter.getExample()));
         } else if (parameter.getExamples() != null && !parameter.getExamples().isEmpty()) {
             Example example = parameter.getExamples().values().iterator().next();
             if (example.getValue() != null) {
                 codegenParameter.example = example.getValue().toString();
+                codegenParameter.vendorExtensions.put(X_PY_EXAMPLE, toPythonLiteral(example.getValue()));
             }
         } else if (schema != null && schema.getExample() != null) {
             codegenParameter.example = schema.getExample().toString();
+            codegenParameter.vendorExtensions.put(X_PY_EXAMPLE, toPythonLiteral(schema.getExample()));
         }
 
         setParameterExampleValue(codegenParameter);
+    }
+
+    protected String toPythonExample(CodegenProperty cp) {
+        if (cp == null) {
+            return null;
+        }
+
+        Object example = getSchemaExample(cp.jsonSchema);
+        if (example != null) {
+            return toPythonLiteral(example);
+        }
+
+        return null;
+    }
+
+    protected String toPythonExample(CodegenParameter cp) {
+        if (cp == null) {
+            return null;
+        }
+
+        Object example = getSchemaExample(cp.jsonSchema);
+        if (example != null) {
+            return toPythonLiteral(example);
+        }
+
+        return null;
+    }
+
+    private Object getSchemaExample(String jsonSchema) {
+        if (StringUtils.isEmpty(jsonSchema)) {
+            return null;
+        }
+        try {
+            Map<String, Object> schema = Json.mapper().readValue(jsonSchema, Map.class);
+            Object example = schema.get("example");
+            if (example != null) {
+                return example;
+            }
+            Object examples = schema.get("examples");
+            if (examples instanceof List && !((List<?>) examples).isEmpty()) {
+                return ((List<?>) examples).get(0);
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    protected String toPythonLiteral(Object value) {
+        if (value == null) {
+            return "None";
+        }
+        if (value instanceof String) {
+            return toPythonStringLiteral((String) value);
+        }
+        if (value instanceof Boolean) {
+            return (Boolean) value ? "True" : "False";
+        }
+        if (value instanceof Number) {
+            return value.toString();
+        }
+        if (value instanceof Map) {
+            List<String> entries = new ArrayList<>();
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
+                entries.add(toPythonStringLiteral(String.valueOf(entry.getKey())) + ": " + toPythonLiteral(entry.getValue()));
+            }
+            return "{" + StringUtils.join(entries, ", ") + "}";
+        }
+        if (value instanceof Iterable) {
+            List<String> items = new ArrayList<>();
+            for (Object item : (Iterable<?>) value) {
+                items.add(toPythonLiteral(item));
+            }
+            return "[" + StringUtils.join(items, ", ") + "]";
+        }
+
+        return toPythonStringLiteral(String.valueOf(value));
+    }
+
+    protected String toPythonStringLiteral(String value) {
+        return PythonStringUtils.toPythonStringLiteral(value);
     }
 
     @Override
@@ -830,6 +923,11 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     }
 
     @Override
+    protected ImmutableMap.Builder<String, Mustache.Lambda> addMustacheLambdas() {
+        return PythonStringUtils.addMustacheLambdas(super.addMustacheLambdas());
+    }
+
+    @Override
     public Map<String, ModelsMap> postProcessAllModels(Map<String, ModelsMap> objs) {
         final Map<String, ModelsMap> processed = super.postProcessAllModels(objs);
 
@@ -897,16 +995,16 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 codegenProperties = model.getComposedSchemas().getOneOf();
                 moduleImports.add("typing", "Any");
                 moduleImports.add("typing", "List");
-                moduleImports.add("pydantic", "Field");
-                moduleImports.add("pydantic", "StrictStr");
-                moduleImports.add("pydantic", "ValidationError");
-                moduleImports.add("pydantic", "field_validator");
+                moduleImports.add(PYDANTIC, "Field");
+                moduleImports.add(PYDANTIC, "StrictStr");
+                moduleImports.add(PYDANTIC, "ValidationError");
+                moduleImports.add(PYDANTIC, "field_validator");
             } else if (!model.anyOf.isEmpty()) { // anyOF
                 codegenProperties = model.getComposedSchemas().getAnyOf();
-                moduleImports.add("pydantic", "Field");
-                moduleImports.add("pydantic", "StrictStr");
-                moduleImports.add("pydantic", "ValidationError");
-                moduleImports.add("pydantic", "field_validator");
+                moduleImports.add(PYDANTIC, "Field");
+                moduleImports.add(PYDANTIC, "StrictStr");
+                moduleImports.add(PYDANTIC, "ValidationError");
+                moduleImports.add(PYDANTIC, "field_validator");
             } else { // typical model
                 codegenProperties = model.vars;
 
@@ -941,7 +1039,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
             // if pydantic model
             if (!model.isEnum) {
-                moduleImports.add("pydantic", "ConfigDict");
+                moduleImports.add(PYDANTIC, "ConfigDict");
             }
 
             //loop through properties/schemas to set up typing, pydantic
@@ -952,13 +1050,13 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 }
 
                 String typing = pydantic.generatePythonType(cp);
-                cp.vendorExtensions.put("x-py-typing", typing);
+                cp.vendorExtensions.put(X_PY_TYPING, typing);
 
                 // setup x-py-name for each oneOf/anyOf schema
                 if (!model.oneOf.isEmpty()) { // oneOf
-                    cp.vendorExtensions.put("x-py-name", String.format(Locale.ROOT, "oneof_schema_%d_validator", property_count++));
+                    cp.vendorExtensions.put(X_PY_NAME, String.format(Locale.ROOT, "oneof_schema_%d_validator", property_count++));
                 } else if (!model.anyOf.isEmpty()) { // anyOf
-                    cp.vendorExtensions.put("x-py-name", String.format(Locale.ROOT, "anyof_schema_%d_validator", property_count++));
+                    cp.vendorExtensions.put(X_PY_NAME, String.format(Locale.ROOT, "anyof_schema_%d_validator", property_count++));
                 }
             }
 
@@ -966,22 +1064,22 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             if (!StringUtils.isEmpty(model.parent)) {
                 modelImports.add(model.parent);
             } else if (!model.isEnum) {
-                moduleImports.add("pydantic", "BaseModel");
+                moduleImports.add(PYDANTIC, "BaseModel");
             }
 
             // set enum type in extensions and update `name` in enumVars
             if (model.isEnum) {
                 for (Map<String, Object> enumVars : (List<Map<String, Object>>) model.getAllowableValues().get("enumVars")) {
                     if ((Boolean) enumVars.get("isString")) {
-                        model.vendorExtensions.putIfAbsent("x-py-enum-type", "str");
+                        model.vendorExtensions.putIfAbsent(X_PY_ENUM_TYPE, "str");
                         // Do not overwrite the variable name if already set through x-enum-varnames
-                        if (model.vendorExtensions.get("x-enum-varnames") == null) {
+                        if (model.vendorExtensions.get(X_ENUM_VARNAMES) == null) {
                             enumVars.put("name", toEnumVariableName((String) enumVars.get("value"), "str"));
                         }
                     } else {
-                        model.vendorExtensions.putIfAbsent("x-py-enum-type", "int");
+                        model.vendorExtensions.putIfAbsent(X_PY_ENUM_TYPE, "int");
                         // Do not overwrite the variable name if already set through x-enum-varnames
-                        if (model.vendorExtensions.get("x-enum-varnames") == null) {
+                        if (model.vendorExtensions.get(X_ENUM_VARNAMES) == null) {
                             enumVars.put("name", toEnumVariableName((String) enumVars.get("value"), "int"));
                         }
                     }
@@ -989,7 +1087,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             }
 
             // set the extensions if the key is absent
-            model.getVendorExtensions().putIfAbsent("x-py-readonly", readOnlyFields);
+            model.getVendorExtensions().putIfAbsent(X_PY_READONLY, readOnlyFields);
 
             // remove the items of postponedModelImports in modelImports to avoid circular imports error
             if (!modelImports.isEmpty() && !postponedModelImports.isEmpty()) {
@@ -1008,12 +1106,12 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 }
 
                 if (!modelsToImport.isEmpty()) {
-                    model.getVendorExtensions().putIfAbsent("x-py-model-imports", modelsToImport);
+                    model.getVendorExtensions().putIfAbsent(X_PY_MODEL_IMPORTS, modelsToImport);
                 }
             }
 
             if (!moduleImports.isEmpty()) {
-                model.getVendorExtensions().putIfAbsent("x-py-other-imports", moduleImports.exports());
+                model.getVendorExtensions().putIfAbsent(X_PY_OTHER_IMPORTS, moduleImports.exports());
             }
 
 
@@ -1027,7 +1125,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                     modelsToImport.add("from " + packageName + ".models." + underscore(modelImport) + " import " + modelImport);
                 }
 
-                model.getVendorExtensions().putIfAbsent("x-py-postponed-model-imports", modelsToImport);
+                model.getVendorExtensions().putIfAbsent(X_PY_POSTPONED_MODEL_IMPORTS, modelsToImport);
             }
         }
 
@@ -1067,12 +1165,10 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     }
 
     public void setMapNumberTo(String mapNumberTo) {
-        if ("Union[StrictFloat, StrictInt]".equals(mapNumberTo)
-                || "StrictFloat".equals(mapNumberTo)
-                || "float".equals(mapNumberTo)) {
+        if (SUPPORTED_NUMBER_MAPPINGS.contains(mapNumberTo)) {
             this.mapNumberTo = mapNumberTo;
         } else {
-            throw new IllegalArgumentException("mapNumberTo value must be Union[StrictFloat, StrictInt], StrictFloat or float");
+            throw new IllegalArgumentException(String.format(Locale.ROOT, "mapNumberTo supports %s", SUPPORTED_NUMBER_MAPPINGS));
         }
     }
 
@@ -1238,7 +1334,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                         null
                 );
                 String typing = pydantic.generatePythonType(cp);
-                cp.vendorExtensions.put("x-py-typing", typing);
+                cp.vendorExtensions.put(X_PY_TYPING, typing);
             }
 
             // update typing import for operation return type
@@ -1279,7 +1375,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 for (String exampleImport : exampleImports) {
                     imports.add("from " + packageName + ".models." + underscore(exampleImport) + " import " + exampleImport);
                 }
-                operation.vendorExtensions.put("x-py-example-import", imports);
+                operation.vendorExtensions.put(X_PY_EXAMPLE_IMPORT, imports);
             }
 
             if (!postponedExampleImports.isEmpty()) {
@@ -1288,7 +1384,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                     imports.add("from " + packageName + ".models." + underscore(exampleImport) + " import "
                             + exampleImport);
                 }
-                operation.vendorExtensions.put("x-py-example-import", imports);
+                operation.vendorExtensions.put(X_PY_EXAMPLE_IMPORT, imports);
             }
 
             // Remove constant params from allParams list and add to constantParams
@@ -1333,7 +1429,14 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
     @Override
     public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+        property.vendorExtensions.put(
+                X_PY_WIRE_NAME_LITERAL,
+                toPythonStringLiteral(property.baseName));
         postProcessPattern(property.pattern, property.vendorExtensions);
+
+        if (property.isArray) {
+            postProcessPattern(property.items.pattern, property.items.vendorExtensions);
+        }
     }
 
     /*
@@ -1370,7 +1473,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             }
 
             vendorExtensions.put(X_REGEX, regex.replace("\"", "\\\""));
-            vendorExtensions.put("x-pattern", pattern.replace("\"", "\\\""));
+            vendorExtensions.put(X_PATTERN, pattern.replace("\"", "\\\""));
             vendorExtensions.put(X_MODIFIERS, modifiers);
         }
     }
@@ -1629,7 +1732,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             }
 
             if (fieldParams.size() > 0) {
-                imports.add("pydantic", "Field");
+                imports.add(PYDANTIC, "Field");
                 imports.add("typing_extensions", "Annotated");
                 currentType = "Annotated[" + currentType + ", Field(" + StringUtils.join(fieldParams, ", ") + ")]";
             }
@@ -1669,7 +1772,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                     ants.add(ans);
                 }
 
-                imports.add("pydantic", "Field");
+                imports.add(PYDANTIC, "Field");
                 typeValue = "Field(" + StringUtils.join(ants, ", ") + ")";
                 return typeValue;
             }
@@ -1735,6 +1838,11 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
     }
 
     class PydanticType {
+
+        private static final String TYPING = "typing";
+
+        private static final String DECIMAL = "Decimal";
+
         private Set<String> modelImports;
         private Set<String> exampleImports;
         private Set<String> postponedModelImports;
@@ -1760,12 +1868,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
         private PythonType arrayType(IJsonSchemaValidationProperties cp) {
             PythonType pt = new PythonType();
-            if (cp.getMaxItems() != null) {
-                pt.constrain("max_length", cp.getMaxItems());
-            }
-            if (cp.getMinItems() != null) {
-                pt.constrain("min_length", cp.getMinItems());
-            }
+            ConstraintApplier.applyConstraints(cp, pt, ConstraintType.ARRAY);
             if (cp.getUniqueItems()) {
                 // A unique "array" is a set
                 // TODO: pydantic v2: Pydantic suggest to convert this to a set, but this has some implications:
@@ -1776,10 +1879,10 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 //pt.setType("Set");
                 //moduleImports.add("typing", "Set");
                 pt.setType("List");
-                moduleImports.add("typing", "List");
+                moduleImports.add(TYPING, "List");
             } else {
                 pt.setType("List");
-                moduleImports.add("typing", "List");
+                moduleImports.add(TYPING, "List");
             }
             pt.addTypeParam(collectionItemType(cp.getItems()));
             return pt;
@@ -1788,7 +1891,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
         private PythonType collectionItemType(CodegenProperty itemCp) {
             PythonType itemPt = getType(itemCp);
             if (itemCp != null && !itemPt.type.equals("Any") && itemCp.isNullable) {
-                moduleImports.add("typing", "Optional");
+                moduleImports.add(TYPING, "Optional");
                 PythonType opt = new PythonType("Optional");
                 opt.addTypeParam(itemPt);
                 itemPt = opt;
@@ -1803,32 +1906,27 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
                 // e.g. constr(regex=r'/[a-z]/i', strict=True)
                 pt.constrain("strict", true);
-                if (cp.getMaxLength() != null) {
-                    pt.constrain("max_length", cp.getMaxLength());
-                }
-                if (cp.getMinLength() != null) {
-                    pt.constrain("min_length", cp.getMinLength());
-                }
+                ConstraintApplier.applyConstraints(cp, pt, ConstraintType.STRING);
 
                 if (cp.getPattern() != null) {
-                    moduleImports.add("pydantic", "field_validator");
+                    moduleImports.add(PYDANTIC, "field_validator");
                     // use validator instead as regex doesn't support flags, e.g. IGNORECASE
                     //fieldCustomization.add(Locale.ROOT, String.format(Locale.ROOT, "regex=r'%s'", cp.getPattern()));
                 }
                 return pt;
             } else {
                 if ("password".equals(cp.getFormat())) { // TODO avoid using format, use `is` boolean flag instead
-                    moduleImports.add("pydantic", "SecretStr");
+                    moduleImports.add(PYDANTIC, "SecretStr");
                     return new PythonType("SecretStr");
                 } else {
-                    moduleImports.add("pydantic", "StrictStr");
+                    moduleImports.add(PYDANTIC, "StrictStr");
                     return new PythonType("StrictStr");
                 }
             }
         }
 
         private PythonType mapType(IJsonSchemaValidationProperties cp) {
-            moduleImports.add("typing", "Dict");
+            moduleImports.add(TYPING, "Dict");
             PythonType pt = new PythonType("Dict");
             pt.addTypeParam(new PythonType("str"));
             pt.addTypeParam(collectionItemType(cp.getItems()));
@@ -1840,34 +1938,14 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 PythonType floatt = new PythonType("float");
                 PythonType intt = new PythonType("int");
 
-                // e.g. confloat(ge=10, le=100, strict=True)
-                if (cp.getMaximum() != null) {
-                    if (cp.getExclusiveMaximum()) {
-                        floatt.constrain("lt", cp.getMaximum(), false);
-                        intt.constrain("lt", (int) Math.ceil(Double.valueOf(cp.getMaximum()))); // e.g. < 7.59 => < 8
-                    } else {
-                        floatt.constrain("le", cp.getMaximum(), false);
-                        intt.constrain("le", (int) Math.floor(Double.valueOf(cp.getMaximum()))); // e.g. <= 7.59 => <= 7
-                    }
-                }
-                if (cp.getMinimum() != null) {
-                    if (cp.getExclusiveMinimum()) {
-                        floatt.constrain("gt", cp.getMinimum(), false);
-                        intt.constrain("gt", (int) Math.floor(Double.valueOf(cp.getMinimum()))); // e.g. > 7.59 => > 7
-                    } else {
-                        floatt.constrain("ge", cp.getMinimum(), false);
-                        intt.constrain("ge", (int) Math.ceil(Double.valueOf(cp.getMinimum()))); // e.g. >= 7.59 => >= 8
-                    }
-                }
-                if (cp.getMultipleOf() != null) {
-                    floatt.constrain("multiple_of", cp.getMultipleOf());
-                }
+                ConstraintApplier.applyConstraints(cp, floatt, ConstraintType.NUMBER);
+                ConstraintApplier.applyConstraints(cp, intt, ConstraintType.ROUNDED_NUMBER);
 
                 if ("Union[StrictFloat, StrictInt]".equals(mapNumberTo)) {
                     floatt.constrain("strict", true);
                     intt.constrain("strict", true);
 
-                    moduleImports.add("typing", "Union");
+                    moduleImports.add(TYPING, "Union");
                     PythonType pt = new PythonType("Union");
                     pt.addTypeParam(floatt);
                     pt.addTypeParam(intt);
@@ -1875,21 +1953,26 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 } else if ("StrictFloat".equals(mapNumberTo)) {
                     floatt.constrain("strict", true);
                     return floatt;
+                } else if (DECIMAL.equals(mapNumberTo)) {
+                    return decimalType(cp);
                 } else { // float
                     return floatt;
                 }
             } else {
                 if ("Union[StrictFloat, StrictInt]".equals(mapNumberTo)) {
-                    moduleImports.add("typing", "Union");
-                    moduleImports.add("pydantic", "StrictFloat");
-                    moduleImports.add("pydantic", "StrictInt");
+                    moduleImports.add(TYPING, "Union");
+                    moduleImports.add(PYDANTIC, "StrictFloat");
+                    moduleImports.add(PYDANTIC, "StrictInt");
                     PythonType pt = new PythonType("Union");
                     pt.addTypeParam(new PythonType("StrictFloat"));
                     pt.addTypeParam(new PythonType("StrictInt"));
                     return pt;
                 } else if ("StrictFloat".equals(mapNumberTo)) {
-                    moduleImports.add("pydantic", "StrictFloat");
+                    moduleImports.add(PYDANTIC, "StrictFloat");
                     return new PythonType("StrictFloat");
+                } else if (DECIMAL.equals(mapNumberTo)) {
+                    moduleImports.add("decimal", DECIMAL);
+                    return new PythonType(DECIMAL);
                 } else {
                     return new PythonType("float");
                 }
@@ -1901,26 +1984,10 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 PythonType pt = new PythonType("int");
                 // e.g. conint(ge=10, le=100, strict=True)
                 pt.constrain("strict", true);
-                if (cp.getMaximum() != null) {
-                    if (cp.getExclusiveMaximum()) {
-                        pt.constrain("lt", cp.getMaximum(), false);
-                    } else {
-                        pt.constrain("le", cp.getMaximum(), false);
-                    }
-                }
-                if (cp.getMinimum() != null) {
-                    if (cp.getExclusiveMinimum()) {
-                        pt.constrain("gt", cp.getMinimum(), false);
-                    } else {
-                        pt.constrain("ge", cp.getMinimum(), false);
-                    }
-                }
-                if (cp.getMultipleOf() != null) {
-                    pt.constrain("multiple_of", cp.getMultipleOf());
-                }
+                ConstraintApplier.applyConstraints(cp, pt, ConstraintType.NUMBER);
                 return pt;
             } else {
-                moduleImports.add("pydantic", "StrictInt");
+                moduleImports.add(PYDANTIC, "StrictInt");
                 return new PythonType("StrictInt");
             }
         }
@@ -1933,28 +2000,22 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 // e.g. conbytes(min_length=2, max_length=10)
                 bytest.constrain("strict", true);
                 strt.constrain("strict", true);
-                if (cp.getMaxLength() != null) {
-                    bytest.constrain("max_length", cp.getMaxLength());
-                    strt.constrain("max_length", cp.getMaxLength());
-                }
-                if (cp.getMinLength() != null) {
-                    bytest.constrain("min_length", cp.getMinLength());
-                    strt.constrain("min_length", cp.getMinLength());
-                }
+                ConstraintApplier.applyConstraints(cp, bytest, ConstraintType.BINARY);
+                ConstraintApplier.applyConstraints(cp, strt, ConstraintType.BINARY);
                 if (cp.getPattern() != null) {
-                    moduleImports.add("pydantic", "field_validator");
+                    moduleImports.add(PYDANTIC, "field_validator");
                     // use validator instead as regex doesn't support flags, e.g. IGNORECASE
                     //fieldCustomization.add(Locale.ROOT, String.format(Locale.ROOT, "regex=r'%s'", cp.getPattern()));
                 }
 
-                moduleImports.add("typing", "Union");
+                moduleImports.add(TYPING, "Union");
 
                 PythonType pt = new PythonType("Union");
                 pt.addTypeParam(bytest);
                 pt.addTypeParam(strt);
 
                 if (cp.getIsBinary()) {
-                    moduleImports.add("typing", "Tuple");
+                    moduleImports.add(TYPING, "Tuple");
 
                     PythonType tt = new PythonType("Tuple");
                     // this string is a filename, not a validated value
@@ -1967,16 +2028,16 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 return pt;
             } else {
                 // same as above which has validation
-                moduleImports.add("pydantic", "StrictBytes");
-                moduleImports.add("pydantic", "StrictStr");
-                moduleImports.add("typing", "Union");
+                moduleImports.add(PYDANTIC, "StrictBytes");
+                moduleImports.add(PYDANTIC, "StrictStr");
+                moduleImports.add(TYPING, "Union");
 
                 PythonType pt = new PythonType("Union");
                 pt.addTypeParam(new PythonType("StrictBytes"));
                 pt.addTypeParam(new PythonType("StrictStr"));
 
                 if (cp.getIsBinary()) {
-                    moduleImports.add("typing", "Tuple");
+                    moduleImports.add(TYPING, "Tuple");
 
                     PythonType tt = new PythonType("Tuple");
                     tt.addTypeParam(new PythonType("StrictStr"));
@@ -1990,41 +2051,25 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
         }
 
         private PythonType boolType(IJsonSchemaValidationProperties cp) {
-            moduleImports.add("pydantic", "StrictBool");
+            moduleImports.add(PYDANTIC, "StrictBool");
             return new PythonType("StrictBool");
         }
 
         private PythonType decimalType(IJsonSchemaValidationProperties cp) {
-            PythonType pt = new PythonType("Decimal");
-            moduleImports.add("decimal", "Decimal");
+            PythonType pt = new PythonType(DECIMAL);
+            moduleImports.add("decimal", DECIMAL);
 
             if (cp.getHasValidation()) {
                 // e.g. condecimal(ge=10, le=100, strict=True)
                 pt.constrain("strict", true);
-                if (cp.getMaximum() != null) {
-                    if (cp.getExclusiveMaximum()) {
-                        pt.constrain("gt", cp.getMaximum(), false);
-                    } else {
-                        pt.constrain("ge", cp.getMaximum(), false);
-                    }
-                }
-                if (cp.getMinimum() != null) {
-                    if (cp.getExclusiveMinimum()) {
-                        pt.constrain("lt", cp.getMinimum(), false);
-                    } else {
-                        pt.constrain("le", cp.getMinimum(), false);
-                    }
-                }
-                if (cp.getMultipleOf() != null) {
-                    pt.constrain("multiple_of", cp.getMultipleOf());
-                }
+                ConstraintApplier.applyConstraints(cp, pt, ConstraintType.NUMBER);
             }
 
             return pt;
         }
 
         private PythonType anyType(IJsonSchemaValidationProperties cp) {
-            moduleImports.add("typing", "Any");
+            moduleImports.add(TYPING, "Any");
             return new PythonType("Any");
         }
 
@@ -2056,12 +2101,16 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
             if (cp == null) {
                 // if codegen property (e.g. map/dict of undefined type) is null, default to string
                 LOGGER.warn("Codegen property is null (e.g. map/dict of undefined type). Default to typing.Any.");
-                moduleImports.add("typing", "Any");
+                moduleImports.add(TYPING, "Any");
                 return new PythonType("Any");
             }
 
             if (cp.getIsEnum()) {
-                moduleImports.add("pydantic", "field_validator");
+                moduleImports.add(PYDANTIC, "field_validator");
+            }
+
+            if (cp.getPattern() != null) {
+                moduleImports.add(PYDANTIC, "field_validator");
             }
 
             if (cp.getIsArray()) {
@@ -2103,7 +2152,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                also need to put cp.isEnum check after isArray, isMap check
             if (cp.isEnum) {
                 // use Literal for inline enum
-                moduleImports.add("typing", "Literal");
+                moduleImports.add(TYPING, "Literal");
                 List<String> values = new ArrayList<>();
                 List<Map<String, Object>> enumVars = (List<Map<String, Object>>) cp.allowableValues.get("enumVars");
                 if (enumVars != null) {
@@ -2152,7 +2201,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
         private String finalizeType(CodegenProperty cp, PythonType pt) {
             if (!cp.required || cp.isNullable) {
-                moduleImports.add("typing", "Optional");
+                moduleImports.add(TYPING, "Optional");
                 PythonType opt = new PythonType("Optional");
                 opt.addTypeParam(pt);
                 pt = opt;
@@ -2164,13 +2213,13 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
             // field
             if (cp.baseName != null && !cp.baseName.equals(cp.name)) { // base name not the same as name
-                pt.annotate("alias", cp.baseName);
+                pt.annotate("alias", toPythonStringLiteral(cp.baseName), false);
             }
 
-            /* TODO review as example may break the build
-            if (!StringUtils.isEmpty(cp.getExample())) { // has example
-                fields.add(String.format(Locale.ROOT, "example=%s", cp.getExample()));
-            }*/
+            String example = toPythonExample(cp);
+            if (example != null) {
+                pt.annotate("json_schema_extra", "{\"examples\": [" + example + "]}", false);
+            }
 
             //String defaultValue = null;
             if (!cp.required) { //optional
@@ -2233,7 +2282,7 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
 
         private String finalizeType(CodegenParameter cp, PythonType pt) {
             if (!cp.required || cp.isNullable) {
-                moduleImports.add("typing", "Optional");
+                moduleImports.add(TYPING, "Optional");
                 PythonType opt = new PythonType("Optional");
                 opt.addTypeParam(pt);
                 pt = opt;
@@ -2243,13 +2292,98 @@ public abstract class AbstractPythonCodegen extends DefaultCodegen implements Co
                 pt.annotate("description", cp.description);
             }
 
-            /* TODO support example
-            if (!StringUtils.isEmpty(cp.getExample())) { // has example
-                fields.add(String.format(Locale.ROOT, "example=%s", cp.getExample()));
-            }*/
-
             //return pt.asTypeConstraint(moduleImports);
             return pt.asTypeConstraintWithAnnotations(moduleImports);
+        }
+    }
+
+    private enum ConstraintType {
+        ARRAY, BINARY, STRING, NUMBER, ROUNDED_NUMBER
+    }
+
+    private static class ConstraintApplier {
+
+        private static final String MAX_LENGTH = "max_length";
+        private static final String MIN_LENGTH = "min_length";
+        private static final String LESS_THAN = "lt";
+        private static final String GREATER_THAN = "gt";
+        private static final String GREATER_OR_EQUAL_TO = "ge";
+        private static final String LESS_OR_EQUAL_TO = "le";
+        private static final String MULTIPLE_OF = "multiple_of";
+
+        static void applyConstraints(IJsonSchemaValidationProperties cp, PythonType pythonType, ConstraintType type) {
+            if (cp == null || pythonType == null) {
+                return;
+            }
+
+            switch (type) {
+                case ARRAY:
+                    if (cp.getMaxItems() != null) {
+                        pythonType.constrain(MAX_LENGTH, cp.getMaxItems());
+                    }
+                    if (cp.getMinItems() != null) {
+                        pythonType.constrain(MIN_LENGTH, cp.getMinItems());
+                    }
+                case BINARY:
+                case STRING:
+                    if (cp.getMaxLength() != null) {
+                        pythonType.constrain(MAX_LENGTH, cp.getMaxLength());
+                    }
+                    if (cp.getMinLength() != null) {
+                        pythonType.constrain(MIN_LENGTH, cp.getMinLength());
+                    }
+                    break;
+                case NUMBER:
+                case ROUNDED_NUMBER:
+                    applyNumericConstraints(cp, pythonType, type == ConstraintType.ROUNDED_NUMBER);
+                    break;
+            }
+        }
+
+        private static void applyNumericConstraints(IJsonSchemaValidationProperties cp, PythonType pythonType, boolean rounded) {
+            if (cp.getMaximum() != null) {
+                if (rounded) {
+                    if (cp.getExclusiveMaximum()) {
+                        pythonType.constrain(LESS_THAN, ceilValue(cp.getMaximum())); // e.g. < 7.59 => < 8
+                    } else {
+                        pythonType.constrain(LESS_OR_EQUAL_TO, floorValue(cp.getMaximum())); // e.g. <= 7.59 => <= 7
+                    }
+                } else {
+                    if (cp.getExclusiveMaximum()) {
+                        pythonType.constrain(LESS_THAN, cp.getMaximum(), false);
+                    } else {
+                        pythonType.constrain(LESS_OR_EQUAL_TO, cp.getMaximum(), false);
+                    }
+                }
+            }
+
+            if (cp.getMinimum() != null) {
+                if (rounded) {
+                    if (cp.getExclusiveMinimum()) {
+                        pythonType.constrain(GREATER_THAN, floorValue(cp.getMinimum())); // e.g. > 7.59 => > 7
+                    } else {
+                        pythonType.constrain(GREATER_OR_EQUAL_TO, ceilValue(cp.getMinimum()));  // e.g. >= 7.59 => >= 8
+                    }
+                } else {
+                    if (cp.getExclusiveMinimum()) {
+                        pythonType.constrain(GREATER_THAN, cp.getMinimum(), false);
+                    } else {
+                        pythonType.constrain(GREATER_OR_EQUAL_TO, cp.getMinimum(), false);
+                    }
+                }
+            }
+
+            if (!rounded && cp.getMultipleOf() != null) {
+                pythonType.constrain(MULTIPLE_OF, cp.getMultipleOf());
+            }
+        }
+
+        private static int ceilValue(String value) {
+            return (int) Math.ceil(Double.parseDouble(value));
+        }
+
+        private static int floorValue(String value) {
+            return (int) Math.floor(Double.parseDouble(value));
         }
     }
 }

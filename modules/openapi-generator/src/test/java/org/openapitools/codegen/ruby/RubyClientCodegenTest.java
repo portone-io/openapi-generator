@@ -72,7 +72,7 @@ public class RubyClientCodegenTest {
     }
 
     @Test
-    public void testInitialConfigValues() throws Exception {
+    public void testInitialConfigValues() {
         final RubyClientCodegen codegen = new RubyClientCodegen();
         codegen.processOpts();
 
@@ -85,7 +85,7 @@ public class RubyClientCodegenTest {
     }
 
     @Test
-    public void testSettersForConfigValues() throws Exception {
+    public void testSettersForConfigValues() {
         final RubyClientCodegen codegen = new RubyClientCodegen();
         codegen.setHideGenerationTimestamp(false);
         codegen.processOpts();
@@ -95,7 +95,7 @@ public class RubyClientCodegenTest {
     }
 
     @Test
-    public void testAdditionalPropertiesPutForConfigValues() throws Exception {
+    public void testAdditionalPropertiesPutForConfigValues() {
         final RubyClientCodegen codegen = new RubyClientCodegen();
         codegen.additionalProperties().put(CodegenConstants.HIDE_GENERATION_TIMESTAMP, false);
         codegen.additionalProperties().put(CodegenConstants.MODEL_PACKAGE, "ruby-models");
@@ -183,7 +183,6 @@ public class RubyClientCodegenTest {
         final OpenAPI openAPI = TestUtils.parseFlattenSpec("src/test/resources/3_0/petstore_oas3_test.yaml");
         final RubyClientCodegen codegen = new RubyClientCodegen();
         codegen.setModuleName("OnlinePetstore");
-        final String path = "/pet";
 
         final Schema schema = openAPI.getComponents().getSchemas().get("NullablePet");
         codegen.setOpenAPI(openAPI);
@@ -212,7 +211,6 @@ public class RubyClientCodegenTest {
         final OpenAPI openAPI = TestUtils.parseFlattenSpec("src/test/resources/3_0/petstore_oas3_test.yaml");
         final RubyClientCodegen codegen = new RubyClientCodegen();
         codegen.setModuleName("OnlinePetstore");
-        final String path = "/pet";
 
         final Schema schema = openAPI.getComponents().getSchemas().get("Pet");
         codegen.setOpenAPI(openAPI);
@@ -750,5 +748,18 @@ public class RubyClientCodegenTest {
         Assert.assertEquals(op.allParams.get(7).pattern, "/ax$|/bx$");
         // patten_starts_ends_with_slash '/root/'
         Assert.assertEquals(op.allParams.get(8).pattern, "/root/");
+    }
+
+    @Test
+    public void testQueryParamJsonSerializationSetsQueryIsJsonMimeType() {
+        RubyClientCodegen codegen = new RubyClientCodegen();
+        final OpenAPI openAPI = TestUtils.parseFlattenSpec("src/test/resources/3_0/echo_api.yaml");
+        codegen.setOpenAPI(openAPI);
+        String path = "/query/style_jsonSerialization/object";
+        CodegenOperation op = codegen.fromOperation(path, "GET", openAPI.getPaths().get(path).getGet(), null);
+
+        Assert.assertEquals(op.queryParams.size(), 2);
+        assertTrue(op.queryParams.stream().allMatch(p -> p.queryIsJsonMimeType),
+                "All content:application/json query params should have queryIsJsonMimeType=true");
     }
 }

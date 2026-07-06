@@ -165,25 +165,52 @@ namespace Org.OpenAPITools.Client
         /// <summary>
         /// Configures the HttpClients.
         /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public HostConfiguration AddApiHttpClients(Action<IHttpClientBuilder> builder = null)
+        {
+            return AddApiHttpClients((Action<IServiceProvider, HttpClient>)null, builder);
+        }
+
+        /// <summary>
+        /// Configures the HttpClients.
+        /// </summary>
         /// <param name="client"></param>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public HostConfiguration AddApiHttpClients
-        (
-            Action<HttpClient> client = null, Action<IHttpClientBuilder> builder = null)
+        public HostConfiguration AddApiHttpClients(
+            Action<HttpClient> client,
+            Action<IHttpClientBuilder> builder = null)
+        {
+            var wrapped = client != null ? new Action<IServiceProvider, HttpClient>((_, httpClient) =>
+            {
+                client(httpClient);
+            }) : null;
+            return AddApiHttpClients(wrapped, builder);
+        }
+
+        /// <summary>
+        /// Configures the HttpClients.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public HostConfiguration AddApiHttpClients(
+            Action<IServiceProvider, HttpClient> client,
+            Action<IHttpClientBuilder> builder = null)
         {
             if (client == null)
-                client = c => c.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS);
+                client = (_, c) => c.BaseAddress = new Uri(ClientUtils.BASE_ADDRESS);
 
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
-            builders.Add(_services.AddHttpClient<IAnotherFakeApi, AnotherFakeApi>(client));
-            builders.Add(_services.AddHttpClient<IDefaultApi, DefaultApi>(client));
-            builders.Add(_services.AddHttpClient<IFakeApi, FakeApi>(client));
-            builders.Add(_services.AddHttpClient<IFakeClassnameTags123Api, FakeClassnameTags123Api>(client));
-            builders.Add(_services.AddHttpClient<IPetApi, PetApi>(client));
-            builders.Add(_services.AddHttpClient<IStoreApi, StoreApi>(client));
-            builders.Add(_services.AddHttpClient<IUserApi, UserApi>(client));
+            builders.Add(_services.AddHttpClient<IAnotherFakeApi, AnotherFakeApi>("Org.OpenAPITools.Api.IAnotherFakeApi", client));
+            builders.Add(_services.AddHttpClient<IDefaultApi, DefaultApi>("Org.OpenAPITools.Api.IDefaultApi", client));
+            builders.Add(_services.AddHttpClient<IFakeApi, FakeApi>("Org.OpenAPITools.Api.IFakeApi", client));
+            builders.Add(_services.AddHttpClient<IFakeClassnameTags123Api, FakeClassnameTags123Api>("Org.OpenAPITools.Api.IFakeClassnameTags123Api", client));
+            builders.Add(_services.AddHttpClient<IPetApi, PetApi>("Org.OpenAPITools.Api.IPetApi", client));
+            builders.Add(_services.AddHttpClient<IStoreApi, StoreApi>("Org.OpenAPITools.Api.IStoreApi", client));
+            builders.Add(_services.AddHttpClient<IUserApi, UserApi>("Org.OpenAPITools.Api.IUserApi", client));
             
             if (builder != null)
                 foreach (IHttpClientBuilder instance in builders)

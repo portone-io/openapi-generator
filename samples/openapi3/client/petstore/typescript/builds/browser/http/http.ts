@@ -181,12 +181,16 @@ export class SelfDecodingBody implements ResponseBody {
         });
     }
 
+<<<<<<< HEAD
     stream(): ReadableStreamType {
         if (!this.streamSource) {
             throw new Error("Stream not available. Use stream-enabled response methods.");
         }
         return this.streamSource;
     }
+||||||| 6b147565891
+=======
+>>>>>>> master
 }
 
 export class ResponseContext {
