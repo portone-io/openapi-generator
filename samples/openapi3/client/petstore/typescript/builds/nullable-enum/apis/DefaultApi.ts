@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import {ObjectSerializer} from '../models/ObjectSerializer';
 import {ApiException} from './exception';
 import {canConsumeForm, isCodeInRange} from '../util';
@@ -71,29 +71,3 @@ export class DefaultApiResponseProcessor {
     }
 
 }
-
-/**
- * @param configuration The configuration object
- */
-export async function uniqueItemsWithHttpInfo(
-    configuration: Configuration
-): Promise<HttpInfo<Response>> {
-    const requestFactory = new DefaultApiRequestFactory(configuration);
-    const responseProcessor = new DefaultApiResponseProcessor();
-
-    const requestContext = await requestFactory.uniqueItems();
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.uniqueItemsWithHttpInfo(response);
-}
-
-/**
- * @param configuration The configuration object
- */
-export async function uniqueItems(
-    configuration: Configuration
-): Promise<Response> {
-    const httpInfo = await uniqueItemsWithHttpInfo(configuration);
-    return httpInfo.data;
-}
-

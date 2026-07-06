@@ -20,18 +20,18 @@ import { Action } from "redux-ts-simple";
 
 import {
     DefaultMetaOnlyResponse,
-} from '../models/';
+} from '../models/DefaultMetaOnlyResponse';
 import {
     DefaultMetaOnlyResponseRecord,
     defaultMetaOnlyResponseRecordUtils,
-} from '../models/Record';
+} from '../models/DefaultMetaOnlyResponseRecord';
 import {
     User,
-} from '../models/';
+} from '../models/User';
 import {
     UserRecord,
     userRecordUtils,
-} from '../models/Record';
+} from '../models/UserRecord';
 
 const createSagaAction = <T>(type: string) => originalCreateSagaAction<T>(type, {namespace: "api_userApi"});
 

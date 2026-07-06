@@ -17,27 +17,27 @@ import {
     type TestArrayResponse,
     TestArrayResponseFromJSON,
     TestArrayResponseToJSON,
-} from '../models/';
+} from '../models/TestArrayResponse';
 import {
     type TestDashedDiscriminatorResponse,
     TestDashedDiscriminatorResponseFromJSON,
     TestDashedDiscriminatorResponseToJSON,
-} from '../models/';
+} from '../models/TestDashedDiscriminatorResponse';
 import {
     type TestDiscriminatorResponse,
     TestDiscriminatorResponseFromJSON,
     TestDiscriminatorResponseToJSON,
-} from '../models/';
+} from '../models/TestDiscriminatorResponse';
 import {
     type TestResponse,
     TestResponseFromJSON,
     TestResponseToJSON,
-} from '../models/';
+} from '../models/TestResponse';
 import {
     type TestSnakeCaseDiscriminatorResponse,
     TestSnakeCaseDiscriminatorResponseFromJSON,
     TestSnakeCaseDiscriminatorResponseToJSON,
-} from '../models/';
+} from '../models/TestSnakeCaseDiscriminatorResponse';
 
 /**
  * 

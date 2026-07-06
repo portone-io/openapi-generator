@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi{{importFileExtension}}';
 import {Configuration} from '../configuration{{importFileExtension}}';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http{{importFileExtension}}';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http{{importFileExtension}}';
 {{#platforms}}
 {{#node}}
 import {{^supportsES6}}* as{{/supportsES6}} FormData from "form-data";
@@ -225,7 +225,7 @@ export class {{classname}}ResponseProcessor {
         if (isCodeInRange("{{code}}", response.httpStatusCode)) {
             {{#dataType}}
             {{#isBinary}}
-            const body: {{{dataType}}} = await response.getBodyAsFile() as any as {{{returnType}}};
+            const body: {{{dataType}}} = response.getBodyAsStream() as {{{returnType}}};
             {{/isBinary}}
             {{^isBinary}}
             const body: {{{dataType}}} = ObjectSerializer.deserialize(
@@ -255,7 +255,7 @@ export class {{classname}}ResponseProcessor {
         if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
             {{#returnType}}
             {{#isBinary}}
-            const body: {{{returnType}}} = await response.getBodyAsFile() as any as {{{returnType}}};
+            const body: {{{returnType}}} = response.getBodyAsStream() as {{{returnType}}};
             {{/isBinary}}
             {{^isBinary}}
             const body: {{{returnType}}} = ObjectSerializer.deserialize(
@@ -275,62 +275,4 @@ export class {{classname}}ResponseProcessor {
 
     {{/operation}}
 }
-{{/operations}}
-{{#operations}}
-
-{{#operation}}
-/**
-{{#isDeprecated}}
- * @deprecated
- *
-{{/isDeprecated}}
- {{#notes}}
- * {{&notes}}
- {{/notes}}
- {{#summary}}
- * {{&summary}}
- {{/summary}}
- * @param configuration The configuration object
- {{#allParams}}
- * @param {{paramName}} {{description}}{{#isDeprecated}} (@deprecated){{/isDeprecated}}
- {{/allParams}}
- */
-export async function {{nickname}}WithHttpInfo(
-    configuration: Configuration{{#allParams}},
-    {{paramName}}{{^required}}?{{/required}}: {{{dataType}}}{{/allParams}}
-): Promise<HttpInfo<{{{returnType}}}{{^returnType}}void{{/returnType}}>> {
-    const requestFactory = new {{classname}}RequestFactory(configuration);
-    const responseProcessor = new {{classname}}ResponseProcessor();
-
-    const requestContext = await requestFactory.{{nickname}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.{{nickname}}WithHttpInfo(response);
-}
-
-/**
-{{#isDeprecated}}
- * @deprecated
- *
-{{/isDeprecated}}
- {{#notes}}
- * {{&notes}}
- {{/notes}}
- {{#summary}}
- * {{&summary}}
- {{/summary}}
- * @param configuration The configuration object
- {{#allParams}}
- * @param {{paramName}} {{description}}{{#isDeprecated}} (@deprecated){{/isDeprecated}}
- {{/allParams}}
- */
-export async function {{nickname}}(
-    configuration: Configuration{{#allParams}},
-    {{paramName}}{{^required}}?{{/required}}: {{{dataType}}}{{/allParams}}
-): Promise<{{{returnType}}}{{^returnType}}void{{/returnType}}> {
-    const httpInfo = await {{nickname}}WithHttpInfo(configuration{{#allParams}}, {{paramName}}{{/allParams}});
-    return httpInfo.data;
-}
-
-{{/operation}}
 {{/operations}}

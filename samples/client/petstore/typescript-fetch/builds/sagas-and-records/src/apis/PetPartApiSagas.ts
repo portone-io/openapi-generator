@@ -20,18 +20,18 @@ import { Action } from "redux-ts-simple";
 
 import {
     GetMatchingPartsResponse,
-} from '../models/';
+} from '../models/GetMatchingPartsResponse';
 import {
     GetMatchingPartsResponseRecord,
     getMatchingPartsResponseRecordUtils,
-} from '../models/Record';
+} from '../models/GetMatchingPartsResponseRecord';
 import {
     GetPetPartTypeResponse,
-} from '../models/';
+} from '../models/GetPetPartTypeResponse';
 import {
     GetPetPartTypeResponseRecord,
     getPetPartTypeResponseRecordUtils,
-} from '../models/Record';
+} from '../models/GetPetPartTypeResponseRecord';
 import {
     MatchingPartsRecord,
 } from '../models/MatchingPartsRecord';

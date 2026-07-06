@@ -159,17 +159,22 @@ export class RequestContext {
     }
 }
 
+export type ReadableStreamType = NodeJS.ReadableStream;
+
 export interface ResponseBody {
     text(): Promise<string>;
     binary(): Promise<Buffer>;
-    stream(): ReadableStream<Uint8Array> | null;
+    stream(): ReadableStreamType;
 }
 
 /**
  * Helper class to generate a `ResponseBody` from binary data
  */
 export class SelfDecodingBody implements ResponseBody {
-    constructor(private dataSource: Promise<Buffer>) {}
+    constructor(
+        private dataSource: Promise<Buffer>,
+        private streamSource?: ReadableStreamType
+    ) {}
 
     binary(): Promise<Buffer> {
         return this.dataSource;
@@ -180,8 +185,11 @@ export class SelfDecodingBody implements ResponseBody {
         return data.toString();
     }
 
-    stream(): ReadableStream<Uint8Array> | null {
-        return null;
+    stream(): ReadableStreamType {
+        if (!this.streamSource) {
+            throw new Error("Stream not available. Use stream-enabled response methods.");
+        }
+        return this.streamSource;
     }
 }
 
@@ -229,6 +237,14 @@ export class ResponseContext {
         const data = await this.body.binary();
         const fileName = this.getParsedHeader("content-disposition")["filename"] || "";
         return { data, name: fileName };
+    }
+
+    /**
+     * Get body as a readable stream for efficient streaming of large files.
+     * This is the recommended method for downloading large files.
+     */
+    public getBodyAsStream(): ReadableStreamType {
+        return this.body.stream();
     }
 
     /**

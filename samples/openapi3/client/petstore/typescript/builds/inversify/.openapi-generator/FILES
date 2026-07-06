@@ -3,13 +3,10 @@
 README.md
 apis/PetApi.service.ts
 apis/PetApi.ts
-apis/PetApiFunction.ts
 apis/StoreApi.service.ts
 apis/StoreApi.ts
-apis/StoreApiFunction.ts
 apis/UserApi.service.ts
 apis/UserApi.ts
-apis/UserApiFunction.ts
 apis/baseapi.ts
 apis/exception.ts
 auth/auth.ts

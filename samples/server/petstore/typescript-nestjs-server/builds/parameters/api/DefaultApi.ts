@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { &#39;A&#39; | &#39;B&#39; | &#39;C&#39;,  } from '../models';
 
 export type FindPetsByStatusRequestParams = {
     pathDefault: string

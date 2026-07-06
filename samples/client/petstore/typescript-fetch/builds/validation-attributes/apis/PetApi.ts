@@ -17,12 +17,12 @@ import {
     type ModelApiResponse,
     ModelApiResponseFromJSON,
     ModelApiResponseToJSON,
-} from '../models/';
+} from '../models/ModelApiResponse';
 import {
     type Pet,
     PetFromJSON,
     PetToJSON,
-} from '../models/';
+} from '../models/Pet';
 
 export interface AddPetRequest {
     pet: Pet;

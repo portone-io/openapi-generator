@@ -2,7 +2,6 @@
 .gitignore
 README.md
 apis/DefaultApi.ts
-apis/DefaultApiFunction.ts
 apis/baseapi.ts
 apis/exception.ts
 auth/auth.ts

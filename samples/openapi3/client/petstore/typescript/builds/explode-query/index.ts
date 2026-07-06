@@ -11,10 +11,17 @@ export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddlewar
 export { Observable } from './rxjsStub';
 export { PromiseAnotherFakeApi as AnotherFakeApi,  PromiseDefaultApi as DefaultApi,  PromiseFakeApi as FakeApi,  PromiseFakeClassnameTags123Api as FakeClassnameTags123Api,  PromisePetApi as PetApi,  PromiseStoreApi as StoreApi,  PromiseUserApi as UserApi } from './types/PromiseAPI';
 export * from './apis/AnotherFakeApi';
+export * from './apis/AnotherFakeApiFunction';
 export * from './apis/DefaultApi';
+export * from './apis/DefaultApiFunction';
 export * from './apis/FakeApi';
+export * from './apis/FakeApiFunction';
 export * from './apis/FakeClassnameTags123Api';
+export * from './apis/FakeClassnameTags123ApiFunction';
 export * from './apis/PetApi';
+export * from './apis/PetApiFunction';
 export * from './apis/StoreApi';
+export * from './apis/StoreApiFunction';
 export * from './apis/UserApi';
+export * from './apis/UserApiFunction';
 

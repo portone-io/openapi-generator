@@ -31,6 +31,7 @@ export { {{#apiInfo}}{{#apis}}{{#operations}}Promise{{classname}} as {{classname
 {{#apis}}
 {{#operations}}
 export * from './apis/{{classname}}{{importFileExtension}}';
+export * from './apis/{{classname}}Function{{importFileExtension}}';
 {{/operations}}
 {{/apis}}
 {{/apiInfo}}

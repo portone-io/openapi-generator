@@ -136,6 +136,9 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
 
         typeMapping.put("object", "any");
         typeMapping.put("DateTime", "Date");
+        typeMapping.put("binary", "ReadableStreamType");
+        typeMapping.put("File", "ReadableStreamType");
+        typeMapping.put("file", "ReadableStreamType");
 
         cliOptions.add(new CliOption(NPM_REPOSITORY, "Use this property to set an url your private npmRepo in the package.json"));
         cliOptions.add(new CliOption(TypeScriptClientCodegen.FILE_CONTENT_DATA_TYPE, TypeScriptClientCodegen.FILE_CONTENT_DATA_TYPE_DESC).defaultValue("Buffer"));
@@ -202,6 +205,8 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
         supportingFiles.add(new SupportingFile("api" + File.separator + "middleware.mustache", "", "middleware.ts"));
         supportingFiles.add(new SupportingFile("api" + File.separator + "baseapi.mustache", "apis", "baseapi.ts"));
         apiTemplateFiles.put("api" + File.separator + "api.mustache", ".ts");
+        apiTemplateFiles.put("api" + File.separator + "function.mustache", "Function.ts");
+
         apiDocTemplateFiles.put("api_doc.mustache", ".md");
     }
 
@@ -550,9 +555,9 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
             }
             return "{ [key: string]: " + this.getTypeDeclaration(unaliasSchema(inner)) + postfix + "; }";
         } else if (ModelUtils.isFileSchema(p)) {
-            return "HttpFile";
+            return "ReadableStreamType";
         } else if (ModelUtils.isBinarySchema(p)) {
-            return "any";
+            return "ReadableStreamType";
         } else {
             return super.getTypeDeclaration(p);
         }

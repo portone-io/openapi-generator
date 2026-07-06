@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import * as FormData from "form-data";
 import { URLSearchParams } from 'url';
 import {ObjectSerializer} from '../models/ObjectSerializer';
@@ -100,53 +100,3 @@ export class HeaderApiResponseProcessor {
     }
 
 }
-
-/**
- * Test header parameter(s)
- * Test header parameter(s)
- * @param configuration The configuration object
- * @param integerHeader 
- * @param booleanHeader 
- * @param stringHeader 
- * @param enumNonrefStringHeader 
- * @param enumRefStringHeader 
- */
-export async function testHeaderIntegerBooleanStringEnumsWithHttpInfo(
-    configuration: Configuration,
-    integerHeader?: number,
-    booleanHeader?: boolean,
-    stringHeader?: string,
-    enumNonrefStringHeader?: 'success' | 'failure' | 'unclassified',
-    enumRefStringHeader?: StringEnumRef
-): Promise<HttpInfo<string>> {
-    const requestFactory = new HeaderApiRequestFactory(configuration);
-    const responseProcessor = new HeaderApiResponseProcessor();
-
-    const requestContext = await requestFactory.testHeaderIntegerBooleanStringEnums(integerHeader, booleanHeader, stringHeader, enumNonrefStringHeader, enumRefStringHeader);
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.testHeaderIntegerBooleanStringEnumsWithHttpInfo(response);
-}
-
-/**
- * Test header parameter(s)
- * Test header parameter(s)
- * @param configuration The configuration object
- * @param integerHeader 
- * @param booleanHeader 
- * @param stringHeader 
- * @param enumNonrefStringHeader 
- * @param enumRefStringHeader 
- */
-export async function testHeaderIntegerBooleanStringEnums(
-    configuration: Configuration,
-    integerHeader?: number,
-    booleanHeader?: boolean,
-    stringHeader?: string,
-    enumNonrefStringHeader?: 'success' | 'failure' | 'unclassified',
-    enumRefStringHeader?: StringEnumRef
-): Promise<string> {
-    const httpInfo = await testHeaderIntegerBooleanStringEnumsWithHttpInfo(configuration, integerHeader, booleanHeader, stringHeader, enumNonrefStringHeader, enumRefStringHeader);
-    return httpInfo.data;
-}
-

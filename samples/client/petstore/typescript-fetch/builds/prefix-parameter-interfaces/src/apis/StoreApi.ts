@@ -17,7 +17,7 @@ import {
     type Order,
     OrderFromJSON,
     OrderToJSON,
-} from '../models/';
+} from '../models/Order';
 
 export interface StoreApiDeleteOrderRequest {
     orderId: string;

@@ -17,7 +17,7 @@ import {
     type Client,
     ClientFromJSON,
     ClientToJSON,
-} from '../models/';
+} from '../models/client';
 
 export interface 123testSpecialTagsRequest {
     client: Client;

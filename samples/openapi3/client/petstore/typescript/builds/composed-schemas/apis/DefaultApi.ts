@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import {ObjectSerializer} from '../models/ObjectSerializer';
 import {ApiException} from './exception';
 import {canConsumeForm, isCodeInRange} from '../util';
@@ -202,91 +202,3 @@ export class DefaultApiResponseProcessor {
     }
 
 }
-
-/**
- * @param configuration The configuration object
- * @param filePostRequest 
- */
-export async function filePostWithHttpInfo(
-    configuration: Configuration,
-    filePostRequest?: FilePostRequest
-): Promise<HttpInfo<void>> {
-    const requestFactory = new DefaultApiRequestFactory(configuration);
-    const responseProcessor = new DefaultApiResponseProcessor();
-
-    const requestContext = await requestFactory.filePost(filePostRequest);
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.filePostWithHttpInfo(response);
-}
-
-/**
- * @param configuration The configuration object
- * @param filePostRequest 
- */
-export async function filePost(
-    configuration: Configuration,
-    filePostRequest?: FilePostRequest
-): Promise<void> {
-    const httpInfo = await filePostWithHttpInfo(configuration, filePostRequest);
-    return httpInfo.data;
-}
-
-/**
- * @param configuration The configuration object
- * @param petsFilteredPatchRequest 
- */
-export async function petsFilteredPatchWithHttpInfo(
-    configuration: Configuration,
-    petsFilteredPatchRequest?: PetsFilteredPatchRequest
-): Promise<HttpInfo<void>> {
-    const requestFactory = new DefaultApiRequestFactory(configuration);
-    const responseProcessor = new DefaultApiResponseProcessor();
-
-    const requestContext = await requestFactory.petsFilteredPatch(petsFilteredPatchRequest);
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.petsFilteredPatchWithHttpInfo(response);
-}
-
-/**
- * @param configuration The configuration object
- * @param petsFilteredPatchRequest 
- */
-export async function petsFilteredPatch(
-    configuration: Configuration,
-    petsFilteredPatchRequest?: PetsFilteredPatchRequest
-): Promise<void> {
-    const httpInfo = await petsFilteredPatchWithHttpInfo(configuration, petsFilteredPatchRequest);
-    return httpInfo.data;
-}
-
-/**
- * @param configuration The configuration object
- * @param petsPatchRequest 
- */
-export async function petsPatchWithHttpInfo(
-    configuration: Configuration,
-    petsPatchRequest?: PetsPatchRequest
-): Promise<HttpInfo<void>> {
-    const requestFactory = new DefaultApiRequestFactory(configuration);
-    const responseProcessor = new DefaultApiResponseProcessor();
-
-    const requestContext = await requestFactory.petsPatch(petsPatchRequest);
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.petsPatchWithHttpInfo(response);
-}
-
-/**
- * @param configuration The configuration object
- * @param petsPatchRequest 
- */
-export async function petsPatch(
-    configuration: Configuration,
-    petsPatchRequest?: PetsPatchRequest
-): Promise<void> {
-    const httpInfo = await petsPatchWithHttpInfo(configuration, petsPatchRequest);
-    return httpInfo.data;
-}
-

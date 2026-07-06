@@ -20,18 +20,18 @@ import { Action } from "redux-ts-simple";
 
 import {
     GetBehaviorPermissionsResponse,
-} from '../models/';
+} from '../models/GetBehaviorPermissionsResponse';
 import {
     GetBehaviorPermissionsResponseRecord,
     getBehaviorPermissionsResponseRecordUtils,
-} from '../models/Record';
+} from '../models/GetBehaviorPermissionsResponseRecord';
 import {
     GetBehaviorTypeResponse,
-} from '../models/';
+} from '../models/GetBehaviorTypeResponse';
 import {
     GetBehaviorTypeResponseRecord,
     getBehaviorTypeResponseRecordUtils,
-} from '../models/Record';
+} from '../models/GetBehaviorTypeResponseRecord';
 import {
     BehaviorType,
 } from '../models/BehaviorType';

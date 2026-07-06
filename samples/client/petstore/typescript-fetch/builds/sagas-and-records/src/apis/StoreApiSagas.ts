@@ -20,11 +20,11 @@ import { Action } from "redux-ts-simple";
 
 import {
     Order,
-} from '../models/';
+} from '../models/Order';
 import {
     OrderRecord,
     orderRecordUtils,
-} from '../models/Record';
+} from '../models/OrderRecord';
 
 const createSagaAction = <T>(type: string) => originalCreateSagaAction<T>(type, {namespace: "api_storeApi"});
 

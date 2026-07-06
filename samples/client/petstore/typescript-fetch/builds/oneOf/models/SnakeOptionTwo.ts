@@ -47,10 +47,10 @@ export type SnakeOptionTwoDiscriminatorFieldEnum = typeof SnakeOptionTwoDiscrimi
  * Check if a given object implements the SnakeOptionTwo interface.
  */
 export function instanceOfSnakeOptionTwo(value: object): value is SnakeOptionTwo {
-    if (!('discriminatorField' in value) || value['discriminatorField'] === undefined) return false;
-    if (value['discriminatorField'] !== 'snakeOptionTwo') return false;
+    if ((!('discriminatorField' in (value as Record<string, any>)) && !('discriminator_field' in (value as Record<string, any>))) || ((value as Record<string, any>)['discriminatorField'] === undefined && (value as Record<string, any>)['discriminator_field'] === undefined)) return false;
+    if ((value as Record<string, any>)['discriminatorField'] !== 'snakeOptionTwo' && (value as Record<string, any>)['discriminator_field'] !== 'snakeOptionTwo') return false;
     
-    if (!('someProperty' in value) || value['someProperty'] === undefined) return false;
+    if ((!('someProperty' in (value as Record<string, any>)) && !('some_property' in (value as Record<string, any>))) || ((value as Record<string, any>)['someProperty'] === undefined && (value as Record<string, any>)['some_property'] === undefined)) return false;
     return true;
 }
 

@@ -17,7 +17,7 @@ import {
     type TestBaseDto,
     TestBaseDtoFromJSON,
     TestBaseDtoToJSON,
-} from '../models/';
+} from '../models/TestBaseDto';
 
 /**
  * 

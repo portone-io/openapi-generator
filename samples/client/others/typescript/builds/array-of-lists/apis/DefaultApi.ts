@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import {ObjectSerializer} from '../models/ObjectSerializer';
 import {ApiException} from './exception';
 import {canConsumeForm, isCodeInRange} from '../util';
@@ -71,29 +71,3 @@ export class DefaultApiResponseProcessor {
     }
 
 }
-
-/**
- * @param configuration The configuration object
- */
-export async function listWithHttpInfo(
-    configuration: Configuration
-): Promise<HttpInfo<ListPaged>> {
-    const requestFactory = new DefaultApiRequestFactory(configuration);
-    const responseProcessor = new DefaultApiResponseProcessor();
-
-    const requestContext = await requestFactory.list();
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.listWithHttpInfo(response);
-}
-
-/**
- * @param configuration The configuration object
- */
-export async function list(
-    configuration: Configuration
-): Promise<ListPaged> {
-    const httpInfo = await listWithHttpInfo(configuration);
-    return httpInfo.data;
-}
-

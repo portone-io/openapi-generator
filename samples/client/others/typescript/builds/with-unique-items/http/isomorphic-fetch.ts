@@ -22,7 +22,8 @@ export class IsomorphicFetchHttpLibrary implements HttpLibrary {
 
             const body = {
               text: () => resp.text(),
-              binary: () => resp.blob()
+              binary: () => resp.blob(),
+              stream: () => resp.body as ReadableStream<Uint8Array>
             };
             return new ResponseContext(resp.status, headers, body);
         });

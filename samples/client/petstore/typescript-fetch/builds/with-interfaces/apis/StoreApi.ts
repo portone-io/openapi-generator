@@ -17,7 +17,7 @@ import {
     type Order,
     OrderFromJSON,
     OrderToJSON,
-} from '../models/';
+} from '../models/Order';
 
 export interface DeleteOrderRequest {
     orderId: string;
@@ -39,6 +39,14 @@ export interface PlaceOrderRequest {
  */
 export interface StoreApiInterface {
     /**
+     * Creates request options for deleteOrder without sending the request
+     * @param {string} orderId ID of the order that needs to be deleted
+     * @throws {RequiredError}
+     * @memberof StoreApiInterface
+     */
+    deleteOrderRequestOpts(requestParameters: DeleteOrderRequest): Promise<runtime.RequestOpts>;
+
+    /**
      * For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
      * @summary Delete purchase order by ID
      * @param {string} orderId ID of the order that needs to be deleted
@@ -53,6 +61,13 @@ export interface StoreApiInterface {
      * Delete purchase order by ID
      */
     deleteOrder(requestParameters: DeleteOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * Creates request options for getInventory without sending the request
+     * @throws {RequiredError}
+     * @memberof StoreApiInterface
+     */
+    getInventoryRequestOpts(): Promise<runtime.RequestOpts>;
 
     /**
      * Returns a map of status codes to quantities
@@ -70,6 +85,14 @@ export interface StoreApiInterface {
     getInventory(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: number; }>;
 
     /**
+     * Creates request options for getOrderById without sending the request
+     * @param {number} orderId ID of pet that needs to be fetched
+     * @throws {RequiredError}
+     * @memberof StoreApiInterface
+     */
+    getOrderByIdRequestOpts(requestParameters: GetOrderByIdRequest): Promise<runtime.RequestOpts>;
+
+    /**
      * For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions
      * @summary Find purchase order by ID
      * @param {number} orderId ID of pet that needs to be fetched
@@ -84,6 +107,14 @@ export interface StoreApiInterface {
      * Find purchase order by ID
      */
     getOrderById(requestParameters: GetOrderByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Order>;
+
+    /**
+     * Creates request options for placeOrder without sending the request
+     * @param {Order} body order placed for purchasing the pet
+     * @throws {RequiredError}
+     * @memberof StoreApiInterface
+     */
+    placeOrderRequestOpts(requestParameters: PlaceOrderRequest): Promise<runtime.RequestOpts>;
 
     /**
      * 

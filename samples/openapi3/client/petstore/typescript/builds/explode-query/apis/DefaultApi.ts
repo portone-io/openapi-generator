@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import * as FormData from "form-data";
 import { URLSearchParams } from 'url';
 import {ObjectSerializer} from '../models/ObjectSerializer';
@@ -69,29 +69,3 @@ export class DefaultApiResponseProcessor {
     }
 
 }
-
-/**
- * @param configuration The configuration object
- */
-export async function fooGetWithHttpInfo(
-    configuration: Configuration
-): Promise<HttpInfo<void>> {
-    const requestFactory = new DefaultApiRequestFactory(configuration);
-    const responseProcessor = new DefaultApiResponseProcessor();
-
-    const requestContext = await requestFactory.fooGet();
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.fooGetWithHttpInfo(response);
-}
-
-/**
- * @param configuration The configuration object
- */
-export async function fooGet(
-    configuration: Configuration
-): Promise<void> {
-    const httpInfo = await fooGetWithHttpInfo(configuration);
-    return httpInfo.data;
-}
-

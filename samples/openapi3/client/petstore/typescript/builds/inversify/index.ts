@@ -11,8 +11,11 @@ export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddlewar
 export { Observable } from './rxjsStub';
 export { PromisePetApi as PetApi,  PromiseStoreApi as StoreApi,  PromiseUserApi as UserApi } from './types/PromiseAPI';
 export * from './apis/PetApi';
+export * from './apis/PetApiFunction';
 export * from './apis/StoreApi';
+export * from './apis/StoreApiFunction';
 export * from './apis/UserApi';
+export * from './apis/UserApiFunction';
 
 export * from "./services/index";
 export { AbstractPromisePetApi as AbstractPetApi,  AbstractPromiseStoreApi as AbstractStoreApi,  AbstractPromiseUserApi as AbstractUserApi } from './services/PromiseAPI';

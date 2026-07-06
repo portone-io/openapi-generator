@@ -9,7 +9,7 @@ export class StoreApiController {
   constructor(private readonly storeApi: StoreApi) {}
 
   @Delete('/store/order/:orderId')
-  deleteOrder(@Param('orderId', new DefaultValuePipe(undefined)) orderId: string, @Req() request: Request): void | Promise<void> | Observable<void> {
+  deleteOrder(@Param('orderId') orderId: string, @Req() request: Request): void | Promise<void> | Observable<void> {
     return this.storeApi.deleteOrder(orderId, request);
   }
 
@@ -19,7 +19,7 @@ export class StoreApiController {
   }
 
   @Get('/store/order/:orderId')
-  getOrderById(@Param('orderId', new DefaultValuePipe(undefined)) orderId: number, @Req() request: Request): Order | Promise<Order> | Observable<Order> {
+  getOrderById(@Param('orderId') orderId: number, @Req() request: Request): Order | Promise<Order> | Observable<Order> {
     return this.storeApi.getOrderById(orderId, request);
   }
 

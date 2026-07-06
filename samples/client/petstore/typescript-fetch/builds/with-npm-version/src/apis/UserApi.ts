@@ -17,7 +17,7 @@ import {
     type User,
     UserFromJSON,
     UserToJSON,
-} from '../models/';
+} from '../models/User';
 
 export interface CreateUserRequest {
     body: User;

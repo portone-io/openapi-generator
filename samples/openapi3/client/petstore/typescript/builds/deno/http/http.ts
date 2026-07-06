@@ -143,16 +143,22 @@ export class RequestContext {
 
 }
 
+export type ReadableStreamType = ReadableStream<Uint8Array>;
+
 export interface ResponseBody {
     text(): Promise<string>;
     binary(): Promise<Blob>;
+    stream(): ReadableStreamType;
 }
 
 /**
  * Helper class to generate a `ResponseBody` from binary data
  */
 export class SelfDecodingBody implements ResponseBody {
-    constructor(private dataSource: Promise<Blob>) {}
+    constructor(
+        private dataSource: Promise<Blob>,
+        private streamSource?: ReadableStreamType
+    ) {}
 
     binary(): Promise<Blob> {
         return this.dataSource;
@@ -163,6 +169,12 @@ export class SelfDecodingBody implements ResponseBody {
         return data.text();
     }
 
+    stream(): ReadableStreamType {
+        if (!this.streamSource) {
+            throw new Error("Stream not available. Use stream-enabled response methods.");
+        }
+        return this.streamSource;
+    }
 }
 
 export class ResponseContext {
@@ -218,6 +230,14 @@ export class ResponseContext {
                 type: contentType
             });
         }
+    }
+
+    /**
+     * Get body as a readable stream for efficient streaming of large files.
+     * This is the recommended method for downloading large files.
+     */
+    public getBodyAsStream(): ReadableStreamType {
+        return this.body.stream();
     }
 
     /**

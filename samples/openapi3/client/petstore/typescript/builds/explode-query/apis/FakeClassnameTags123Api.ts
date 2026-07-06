@@ -1,7 +1,7 @@
 // TODO: better import syntax?
 import {BaseAPIRequestFactory, RequiredError, COLLECTION_FORMATS} from './baseapi';
 import {Configuration} from '../configuration';
-import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo} from '../http/http';
+import {RequestContext, HttpMethod, ResponseContext, HttpFile, HttpInfo, ReadableStreamType} from '../http/http';
 import * as FormData from "form-data";
 import { URLSearchParams } from 'url';
 import {ObjectSerializer} from '../models/ObjectSerializer';
@@ -99,37 +99,3 @@ export class FakeClassnameTags123ApiResponseProcessor {
     }
 
 }
-
-/**
- * To test class name in snake case
- * To test class name in snake case
- * @param configuration The configuration object
- * @param client client model
- */
-export async function testClassnameWithHttpInfo(
-    configuration: Configuration,
-    client: Client
-): Promise<HttpInfo<Client>> {
-    const requestFactory = new FakeClassnameTags123ApiRequestFactory(configuration);
-    const responseProcessor = new FakeClassnameTags123ApiResponseProcessor();
-
-    const requestContext = await requestFactory.testClassname(client);
-    const response = await configuration.httpApi.send(requestContext).toPromise();
-
-    return await responseProcessor.testClassnameWithHttpInfo(response);
-}
-
-/**
- * To test class name in snake case
- * To test class name in snake case
- * @param configuration The configuration object
- * @param client client model
- */
-export async function testClassname(
-    configuration: Configuration,
-    client: Client
-): Promise<Client> {
-    const httpInfo = await testClassnameWithHttpInfo(configuration, client);
-    return httpInfo.data;
-}
-

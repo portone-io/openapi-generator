@@ -11,6 +11,9 @@ export type { PromiseMiddleware as Middleware, Middleware as ObservableMiddlewar
 export { Observable } from './rxjsStub.ts';
 export { PromisePetApi as PetApi,  PromiseStoreApi as StoreApi,  PromiseUserApi as UserApi } from './types/PromiseAPI.ts';
 export * from './apis/PetApi.ts';
+export * from './apis/PetApiFunction.ts';
 export * from './apis/StoreApi.ts';
+export * from './apis/StoreApiFunction.ts';
 export * from './apis/UserApi.ts';
+export * from './apis/UserApiFunction.ts';
 
