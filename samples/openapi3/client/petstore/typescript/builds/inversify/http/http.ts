@@ -164,12 +164,7 @@ export type ReadableStreamType = NodeJS.ReadableStream;
 export interface ResponseBody {
     text(): Promise<string>;
     binary(): Promise<Buffer>;
-<<<<<<< HEAD
     stream(): ReadableStreamType;
-||||||| 6b147565891
-=======
-    stream(): ReadableStream<Uint8Array> | null;
->>>>>>> master
 }
 
 /**
@@ -190,17 +185,11 @@ export class SelfDecodingBody implements ResponseBody {
         return data.toString();
     }
 
-<<<<<<< HEAD
     stream(): ReadableStreamType {
         if (!this.streamSource) {
             throw new Error("Stream not available. Use stream-enabled response methods.");
         }
         return this.streamSource;
-||||||| 6b147565891
-=======
-    stream(): ReadableStream<Uint8Array> | null {
-        return null;
->>>>>>> master
     }
 }
 
