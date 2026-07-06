@@ -17,7 +17,7 @@ import {
     type StructuredType,
     StructuredTypeFromJSON,
     StructuredTypeToJSON,
-} from '../models/StructuredType';
+} from '../models/';
 
 export interface CreateFileRequest {
     documentBytes: Blob;

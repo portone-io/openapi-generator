@@ -17,7 +17,7 @@ import {
     type Club,
     ClubFromJSON,
     ClubToJSON,
-} from '../models/Club';
+} from '../models/';
 
 export interface ListRequest {
     personId: string;

@@ -17,57 +17,57 @@ import {
     type ChildWithNullable,
     ChildWithNullableFromJSON,
     ChildWithNullableToJSON,
-} from '../models/child-with-nullable';
+} from '../models/';
 import {
     type Client,
     ClientFromJSON,
     ClientToJSON,
-} from '../models/client';
+} from '../models/';
 import {
     type EnumClass,
     EnumClassFromJSON,
     EnumClassToJSON,
-} from '../models/enum-class';
+} from '../models/';
 import {
     type FakeBigDecimalMap200Response,
     FakeBigDecimalMap200ResponseFromJSON,
     FakeBigDecimalMap200ResponseToJSON,
-} from '../models/fake-big-decimal-map200-response';
+} from '../models/';
 import {
     type FileSchemaTestClass,
     FileSchemaTestClassFromJSON,
     FileSchemaTestClassToJSON,
-} from '../models/file-schema-test-class';
+} from '../models/';
 import {
     type HealthCheckResult,
     HealthCheckResultFromJSON,
     HealthCheckResultToJSON,
-} from '../models/health-check-result';
+} from '../models/';
 import {
     type OuterComposite,
     OuterCompositeFromJSON,
     OuterCompositeToJSON,
-} from '../models/outer-composite';
+} from '../models/';
 import {
     type OuterObjectWithEnumProperty,
     OuterObjectWithEnumPropertyFromJSON,
     OuterObjectWithEnumPropertyToJSON,
-} from '../models/outer-object-with-enum-property';
+} from '../models/';
 import {
     type Pet,
     PetFromJSON,
     PetToJSON,
-} from '../models/pet';
+} from '../models/';
 import {
     type TestInlineFreeformAdditionalPropertiesRequest,
     TestInlineFreeformAdditionalPropertiesRequestFromJSON,
     TestInlineFreeformAdditionalPropertiesRequestToJSON,
-} from '../models/test-inline-freeform-additional-properties-request';
+} from '../models/';
 import {
     type User,
     UserFromJSON,
     UserToJSON,
-} from '../models/user';
+} from '../models/';
 
 export interface FakeHttpSignatureTestRequest {
     pet: Pet;

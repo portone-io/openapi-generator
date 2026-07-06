@@ -76,20 +76,10 @@ export class Order {
     }
 }
 
-<<<<<<< HEAD
     export type OrderStatusEnum =  "placed" | "approved" | "delivered" ;
     export const OrderStatusEnum = {
         Placed: 'placed',
         Approved: 'approved',
         Delivered: 'delivered'
     } as const;
-||||||| 753330dd998
-export enum OrderStatusEnum {
-    Placed = 'placed',
-    Approved = 'approved',
-    Delivered = 'delivered'
-}
-=======
-    export type OrderStatusEnum = "placed" | "approved" | "delivered" ;
->>>>>>> mirror/master
 

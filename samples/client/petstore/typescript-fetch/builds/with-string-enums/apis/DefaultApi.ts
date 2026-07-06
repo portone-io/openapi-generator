@@ -17,22 +17,22 @@ import {
     type EnumPatternObject,
     EnumPatternObjectFromJSON,
     EnumPatternObjectToJSON,
-} from '../models/EnumPatternObject';
+} from '../models/';
 import {
     type FakeEnumRequestGetInline200Response,
     FakeEnumRequestGetInline200ResponseFromJSON,
     FakeEnumRequestGetInline200ResponseToJSON,
-} from '../models/FakeEnumRequestGetInline200Response';
+} from '../models/';
 import {
     type NumberEnum,
     NumberEnumFromJSON,
     NumberEnumToJSON,
-} from '../models/NumberEnum';
+} from '../models/';
 import {
     type StringEnum,
     StringEnumFromJSON,
     StringEnumToJSON,
-} from '../models/StringEnum';
+} from '../models/';
 
 export interface FakeEnumRequestGetInlineRequest {
     stringEnum?: FakeEnumRequestGetInlineStringEnumEnum;

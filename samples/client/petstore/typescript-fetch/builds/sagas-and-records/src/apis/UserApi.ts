@@ -17,12 +17,12 @@ import {
     type DefaultMetaOnlyResponse,
     DefaultMetaOnlyResponseFromJSON,
     DefaultMetaOnlyResponseToJSON,
-} from '../models/DefaultMetaOnlyResponse';
+} from '../models/';
 import {
     type User,
     UserFromJSON,
     UserToJSON,
-} from '../models/User';
+} from '../models/';
 
 export interface CreateUserRequest {
     body: User;

@@ -1975,7 +1975,7 @@ export async function testDecodeArrayOfNullableGet(
  */
 export async function testDecodeArrayOfNullableObjectsGetWithHttpInfo(
     configuration: Configuration
-): Promise<HttpInfo<Array<ComplexObject>>> {
+): Promise<HttpInfo<Array<ComplexObject | null>>> {
     const requestFactory = new DefaultApiRequestFactory(configuration);
     const responseProcessor = new DefaultApiResponseProcessor();
 
@@ -1990,7 +1990,7 @@ export async function testDecodeArrayOfNullableObjectsGetWithHttpInfo(
  */
 export async function testDecodeArrayOfNullableObjectsGet(
     configuration: Configuration
-): Promise<Array<ComplexObject>> {
+): Promise<Array<ComplexObject | null>> {
     const httpInfo = await testDecodeArrayOfNullableObjectsGetWithHttpInfo(configuration);
     return httpInfo.data;
 }
@@ -2334,7 +2334,7 @@ export async function testEncodeArrayOfMapsOfObjectsPost(
  */
 export async function testEncodeArrayOfNullableObjectsPostWithHttpInfo(
     configuration: Configuration,
-    complexObject: Array<ComplexObject>
+    complexObject: Array<ComplexObject | null>
 ): Promise<HttpInfo<void>> {
     const requestFactory = new DefaultApiRequestFactory(configuration);
     const responseProcessor = new DefaultApiResponseProcessor();
@@ -2351,7 +2351,7 @@ export async function testEncodeArrayOfNullableObjectsPostWithHttpInfo(
  */
 export async function testEncodeArrayOfNullableObjectsPost(
     configuration: Configuration,
-    complexObject: Array<ComplexObject>
+    complexObject: Array<ComplexObject | null>
 ): Promise<void> {
     const httpInfo = await testEncodeArrayOfNullableObjectsPostWithHttpInfo(configuration, complexObject);
     return httpInfo.data;

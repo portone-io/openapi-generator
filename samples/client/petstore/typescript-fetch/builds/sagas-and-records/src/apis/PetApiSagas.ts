@@ -20,46 +20,46 @@ import { Action } from "redux-ts-simple";
 
 import {
     Category,
-} from '../models/Category';
+} from '../models/';
 import {
     CategoryRecord,
     categoryRecordUtils,
-} from '../models/CategoryRecord';
+} from '../models/Record';
 import {
     FindPetsByStatusResponse,
-} from '../models/FindPetsByStatusResponse';
+} from '../models/';
 import {
     FindPetsByStatusResponseRecord,
     findPetsByStatusResponseRecordUtils,
-} from '../models/FindPetsByStatusResponseRecord';
+} from '../models/Record';
 import {
     FindPetsByUserResponse,
-} from '../models/FindPetsByUserResponse';
+} from '../models/';
 import {
     FindPetsByUserResponseRecord,
     findPetsByUserResponseRecordUtils,
-} from '../models/FindPetsByUserResponseRecord';
+} from '../models/Record';
 import {
     ModelApiResponse,
-} from '../models/ModelApiResponse';
+} from '../models/';
 import {
     ModelApiResponseRecord,
     modelApiResponseRecordUtils,
-} from '../models/ModelApiResponseRecord';
+} from '../models/Record';
 import {
     Pet,
-} from '../models/Pet';
+} from '../models/';
 import {
     PetRecord,
     petRecordUtils,
-} from '../models/PetRecord';
+} from '../models/Record';
 import {
     PetRegionsResponse,
-} from '../models/PetRegionsResponse';
+} from '../models/';
 import {
     PetRegionsResponseRecord,
     petRegionsResponseRecordUtils,
-} from '../models/PetRegionsResponseRecord';
+} from '../models/Record';
 import {
     UserRecord,
 } from '../models/UserRecord';

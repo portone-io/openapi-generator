@@ -17,12 +17,12 @@ import {
     type GetBehaviorPermissionsResponse,
     GetBehaviorPermissionsResponseFromJSON,
     GetBehaviorPermissionsResponseToJSON,
-} from '../models/GetBehaviorPermissionsResponse';
+} from '../models/';
 import {
     type GetBehaviorTypeResponse,
     GetBehaviorTypeResponseFromJSON,
     GetBehaviorTypeResponseToJSON,
-} from '../models/GetBehaviorTypeResponse';
+} from '../models/';
 
 export interface GetBehaviorPermissionsRequest {
     behaviorId: number;

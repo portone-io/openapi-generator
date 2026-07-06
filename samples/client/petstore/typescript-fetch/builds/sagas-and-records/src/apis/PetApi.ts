@@ -17,32 +17,32 @@ import {
     type Category,
     CategoryFromJSON,
     CategoryToJSON,
-} from '../models/Category';
+} from '../models/';
 import {
     type FindPetsByStatusResponse,
     FindPetsByStatusResponseFromJSON,
     FindPetsByStatusResponseToJSON,
-} from '../models/FindPetsByStatusResponse';
+} from '../models/';
 import {
     type FindPetsByUserResponse,
     FindPetsByUserResponseFromJSON,
     FindPetsByUserResponseToJSON,
-} from '../models/FindPetsByUserResponse';
+} from '../models/';
 import {
     type ModelApiResponse,
     ModelApiResponseFromJSON,
     ModelApiResponseToJSON,
-} from '../models/ModelApiResponse';
+} from '../models/';
 import {
     type Pet,
     PetFromJSON,
     PetToJSON,
-} from '../models/Pet';
+} from '../models/';
 import {
     type PetRegionsResponse,
     PetRegionsResponseFromJSON,
     PetRegionsResponseToJSON,
-} from '../models/PetRegionsResponse';
+} from '../models/';
 
 export interface AddPetRequest {
     dummyCat: Category;

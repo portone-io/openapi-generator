@@ -17,12 +17,12 @@ import {
     type ModelApiResponse,
     ModelApiResponseFromJSON,
     ModelApiResponseToJSON,
-} from '../models/ModelApiResponse';
+} from '../models/';
 import {
     type Pet,
     PetFromJSON,
     PetToJSON,
-} from '../models/Pet';
+} from '../models/';
 
 export interface AddPetRequest {
     body: Pet;
@@ -69,14 +69,6 @@ export interface UploadFileRequest {
  */
 export interface PetApiInterface {
     /**
-     * Creates request options for addPet without sending the request
-     * @param {Pet} body Pet object that needs to be added to the store
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    addPetRequestOpts(requestParameters: AddPetRequest): Promise<runtime.RequestOpts>;
-
-    /**
      * 
      * @summary Add a new pet to the store
      * @param {Pet} body Pet object that needs to be added to the store
@@ -90,15 +82,6 @@ export interface PetApiInterface {
      * Add a new pet to the store
      */
     addPet(requestParameters: AddPetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
-
-    /**
-     * Creates request options for deletePet without sending the request
-     * @param {number} petId Pet id to delete
-     * @param {string} [apiKey] 
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    deletePetRequestOpts(requestParameters: DeletePetRequest): Promise<runtime.RequestOpts>;
 
     /**
      * 
@@ -117,14 +100,6 @@ export interface PetApiInterface {
     deletePet(requestParameters: DeletePetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
-     * Creates request options for findPetsByStatus without sending the request
-     * @param {Array<'available' | 'pending' | 'sold'>} status Status values that need to be considered for filter
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    findPetsByStatusRequestOpts(requestParameters: FindPetsByStatusRequest): Promise<runtime.RequestOpts>;
-
-    /**
      * Multiple status values can be provided with comma separated strings
      * @summary Finds Pets by status
      * @param {Array<'available' | 'pending' | 'sold'>} status Status values that need to be considered for filter
@@ -139,15 +114,6 @@ export interface PetApiInterface {
      * Finds Pets by status
      */
     findPetsByStatus(requestParameters: FindPetsByStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Pet>>;
-
-    /**
-     * Creates request options for findPetsByTags without sending the request
-     * @param {Array<string>} tags Tags to filter by
-     * @deprecated
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    findPetsByTagsRequestOpts(requestParameters: FindPetsByTagsRequest): Promise<runtime.RequestOpts>;
 
     /**
      * Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
@@ -168,14 +134,6 @@ export interface PetApiInterface {
     findPetsByTags(requestParameters: FindPetsByTagsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Pet>>;
 
     /**
-     * Creates request options for getPetById without sending the request
-     * @param {number} petId ID of pet to return
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    getPetByIdRequestOpts(requestParameters: GetPetByIdRequest): Promise<runtime.RequestOpts>;
-
-    /**
      * Returns a single pet
      * @summary Find pet by ID
      * @param {number} petId ID of pet to return
@@ -190,14 +148,6 @@ export interface PetApiInterface {
      * Find pet by ID
      */
     getPetById(requestParameters: GetPetByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Pet>;
-
-    /**
-     * Creates request options for updatePet without sending the request
-     * @param {Pet} body Pet object that needs to be added to the store
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    updatePetRequestOpts(requestParameters: UpdatePetRequest): Promise<runtime.RequestOpts>;
 
     /**
      * 
@@ -215,16 +165,6 @@ export interface PetApiInterface {
     updatePet(requestParameters: UpdatePetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
-     * Creates request options for updatePetWithForm without sending the request
-     * @param {number} petId ID of pet that needs to be updated
-     * @param {string} [name] Updated name of the pet
-     * @param {string} [status] Updated status of the pet
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    updatePetWithFormRequestOpts(requestParameters: UpdatePetWithFormRequest): Promise<runtime.RequestOpts>;
-
-    /**
      * 
      * @summary Updates a pet in the store with form data
      * @param {number} petId ID of pet that needs to be updated
@@ -240,16 +180,6 @@ export interface PetApiInterface {
      * Updates a pet in the store with form data
      */
     updatePetWithForm(requestParameters: UpdatePetWithFormRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
-
-    /**
-     * Creates request options for uploadFile without sending the request
-     * @param {number} petId ID of pet to update
-     * @param {string} [additionalMetadata] Additional data to pass to server
-     * @param {Blob} [file] file to upload
-     * @throws {RequiredError}
-     * @memberof PetApiInterface
-     */
-    uploadFileRequestOpts(requestParameters: UploadFileRequest): Promise<runtime.RequestOpts>;
 
     /**
      * 

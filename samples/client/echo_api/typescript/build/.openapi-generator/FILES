@@ -2,11 +2,17 @@
 .gitignore
 README.md
 apis/AuthApi.ts
+apis/AuthApiFunction.ts
 apis/BodyApi.ts
+apis/BodyApiFunction.ts
 apis/FormApi.ts
+apis/FormApiFunction.ts
 apis/HeaderApi.ts
+apis/HeaderApiFunction.ts
 apis/PathApi.ts
+apis/PathApiFunction.ts
 apis/QueryApi.ts
+apis/QueryApiFunction.ts
 apis/baseapi.ts
 apis/exception.ts
 auth/auth.ts

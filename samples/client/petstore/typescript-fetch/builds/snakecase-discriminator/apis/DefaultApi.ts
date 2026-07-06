@@ -17,7 +17,7 @@ import {
     type FooGetDefaultResponse,
     FooGetDefaultResponseFromJSON,
     FooGetDefaultResponseToJSON,
-} from '../models/FooGetDefaultResponse';
+} from '../models/';
 
 /**
  * 

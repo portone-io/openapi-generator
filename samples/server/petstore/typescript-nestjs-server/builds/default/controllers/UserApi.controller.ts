@@ -24,17 +24,17 @@ export class UserApiController {
   }
 
   @Delete('/user/:username')
-  deleteUser(@Param('username') username: string, @Req() request: Request): void | Promise<void> | Observable<void> {
+  deleteUser(@Param('username', new DefaultValuePipe(undefined)) username: string, @Req() request: Request): void | Promise<void> | Observable<void> {
     return this.userApi.deleteUser(username, request);
   }
 
   @Get('/user/:username')
-  getUserByName(@Param('username') username: string, @Req() request: Request): User | Promise<User> | Observable<User> {
+  getUserByName(@Param('username', new DefaultValuePipe(undefined)) username: string, @Req() request: Request): User | Promise<User> | Observable<User> {
     return this.userApi.getUserByName(username, request);
   }
 
   @Get('/user/login')
-  loginUser(@Query('username') username: string, @Query('password') password: string, @Req() request: Request): string | Promise<string> | Observable<string> {
+  loginUser(@Query('username', new DefaultValuePipe(undefined)) username: string, @Query('password', new DefaultValuePipe(undefined)) password: string, @Req() request: Request): string | Promise<string> | Observable<string> {
     return this.userApi.loginUser(username, password, request);
   }
 
@@ -44,7 +44,7 @@ export class UserApiController {
   }
 
   @Put('/user/:username')
-  updateUser(@Param('username') username: string, @Body() user: User, @Req() request: Request): void | Promise<void> | Observable<void> {
+  updateUser(@Param('username', new DefaultValuePipe(undefined)) username: string, @Body() user: User, @Req() request: Request): void | Promise<void> | Observable<void> {
     return this.userApi.updateUser(username, user, request);
   }
 

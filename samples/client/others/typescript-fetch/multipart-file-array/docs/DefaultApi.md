@@ -29,9 +29,9 @@ async function example() {
 
   const body = {
     // Array<Blob>
-    files: [new Blob(['example file content'], { type: 'application/octet-stream' })],
+    files: /path/to/file.txt,
     // string (optional)
-    metadata: 'metadata_example',
+    metadata: metadata_example,
   } satisfies UploadFilesRequest;
 
   try {

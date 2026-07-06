@@ -17,7 +17,7 @@ import {
     type Client,
     ClientFromJSON,
     ClientToJSON,
-} from '../models/client';
+} from '../models/';
 
 export interface TestClassnameRequest {
     client: Client;
