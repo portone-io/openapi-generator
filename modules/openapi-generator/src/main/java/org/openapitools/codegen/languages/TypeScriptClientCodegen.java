@@ -91,10 +91,6 @@ public class TypeScriptClientCodegen extends AbstractTypeScriptClientCodegen imp
     public static final String USE_ERASABLE_SYNTAX = "useErasableSyntax";
     public static final String USE_ERASABLE_SYNTAX_DESC = "Use erasable syntax for the generated code. This is a temporary feature and will be removed in the future.";
 
-    private static final String ENUM_TYPE_SWITCH = "enumType";
-    private static final String ENUM_TYPE_SWITCH_DESC = "Specify the enum type which should be used in the client code.";
-    private static final String[][] ENUM_TYPES = {{"stringUnion", "Union of literal string types"}, {"enum", "Typescript's [string enums](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums)"}};
-    
     private final Map<String, String> frameworkToHttpLibMap;
 
     @Setter
